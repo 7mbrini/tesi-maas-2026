@@ -1,0 +1,72 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Logged Out | rentalbikes {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-weight: 500;
+            color: var(--rental-dark);
+            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .logout-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            margin: 40px auto;
+        }
+
+        .btn-login {
+            background-color: var(--rental-green);
+            color: white;
+            border: none;
+            font-weight: 500;
+            padding: 8px 25px;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <header class="hero-minimal text-center mb-3">
+        <div class="container">
+            <h1 class="page-title mb-0">Logged Out</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="logout-box shadow-sm text-center">
+            <i class="bi bi-check-circle text-success display-5 d-block mb-3"></i>
+            <p class="text-secondary mb-4">You have successfully logged out of your account.</p>
+            <div class="border-top pt-3">
+                <a href="{% url 'login' %}" class="btn-login shadow-sm">Log in again</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

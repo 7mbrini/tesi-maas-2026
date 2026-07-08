@@ -1,0 +1,87 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Registration Successful | rentalbikes {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-weight: 500;
+            color: var(--rental-dark);
+            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            display: inline-block;
+        }
+
+        /* Card centrale per il messaggio di successo */
+        .success-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            margin: 30px auto; /* Ridotto per risparmiare spazio */
+        }
+
+        .btn-action {
+            background-color: var(--rental-green);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+            color: white;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <header class="hero-minimal text-center mb-2">
+        <div class="container">
+            <h1 class="page-title mb-0">Success</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- BOX CONFERMA -->
+        <div class="success-box shadow-sm text-center">
+            <i class="bi bi-person-check text-success display-4 d-block mb-3"></i>
+            <h3 class="h5 fw-bold text-dark mb-3">Registration Successful!</h3>
+            <p class="text-secondary small mb-4">
+                Thank you for registering. Your account has been created successfully and you are now part of our electric mobility network.
+            </p>
+
+            <div class="border-top pt-3">
+                <a href="{% url 'login' %}" class="btn-action shadow-sm">
+                    Log In Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

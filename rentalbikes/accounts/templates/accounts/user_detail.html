@@ -1,0 +1,135 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} User Profile | rentalbikes {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+            --rental-danger: #ef4444;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-weight: 500;
+            color: var(--rental-dark);
+            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            display: inline-block;
+        }
+
+        .profile-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f8fafc;
+            font-size: 0.9rem;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: var(--rental-dark);
+            font-weight: 600;
+        }
+
+        /* Bottoni Azione */
+        .btn-update {
+            background-color: var(--rental-green);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .btn-delete-link {
+            color: var(--rental-danger);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-delete-link:hover { text-decoration: underline; }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <header class="hero-minimal text-center mb-3">
+        <div class="container">
+            <h1 class="page-title mb-0">My Account</h1>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="profile-box shadow-sm">
+            <div class="text-center mb-4">
+                <i class="bi bi-person-circle text-success display-4"></i>
+                <h2 class="h5 fw-bold mt-2 mb-0">{{ user_obj.username }}</h2>
+                <span class="text-muted small">Registered User</span>
+            </div>
+
+            <div class="mb-4">
+                <div class="info-row">
+                    <span class="info-label"><i class="bi bi-envelope me-2"></i>Email</span>
+                    <span class="info-value">{{ user_obj.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="bi bi-person me-2"></i>First Name</span>
+                    <span class="info-value">{{ user_obj.first_name|default:"-" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="bi bi-person me-2"></i>Last Name</span>
+                    <span class="info-value">{{ user_obj.last_name|default:"-" }}</span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                <div>
+                    <a href="{% url 'user_list' %}" class="text-muted small text-decoration-none">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="{% url 'user_delete' user_obj.pk %}" class="btn-delete-link">
+                        Delete Account
+                    </a>
+                    <a href="{% url 'user_update' user_obj.pk %}" class="btn-update shadow-sm">
+                        Update Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

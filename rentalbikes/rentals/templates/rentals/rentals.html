@@ -1,0 +1,286 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Rentals | rentalbikes {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+            /* Offset aggiornato: 192px + 16px = 208px */
+            --offset-height: 208px;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-weight: 500;
+            color: var(--rental-dark);
+            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: inline-block;
+        }
+
+        .main-row-container {
+            height: calc(100vh - var(--offset-height));
+            min-height: 300px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .left-col-bg {
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+        }
+
+        /* MAPPA: Full height della colonna destra */
+        #RentalsMap {
+            height: 100%;
+            width: 100%;
+        }
+
+        .form-label { font-weight: 500; font-size: 0.85rem; }
+
+        .car-results-container {
+            max-height: 220px; /* Adattato alla nuova altezza */
+            overflow-y: auto;
+            background-color: var(--rental-light-bg);
+            border-radius: 0.5rem;
+            padding: 8px;
+        }
+
+        .car-mini-card {
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 0.5rem;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .car-mini-card:hover { border-color: var(--rental-green); }
+
+        .btn-rent {
+            background-color: var(--rental-green);
+            color: white;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .marker-red-filter {
+          filter: hue-rotate(240deg);
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <header class="hero-minimal mb-0">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap">
+            <div>
+                <h1 class="page-title mb-0">Rent a Car</h1>
+                <p class="header-sub mb-0 d-none d-md-inline">
+                    <i class="bi bi-geo-alt text-success"></i>
+                        Pin your location and filter vehicle features.
+                </p>
+            </div>
+            <span class="text-uppercase small fw-bold text-muted d-none d-sm-inline" style="font-size: 0.7rem; letter-spacing: 1px;">
+                Find Nearby Cars <i class="bi bi-search ms-1"></i>
+            </span>
+        </div>
+    </header>
+
+    <div class="row m-0 p-0 main-row-container shadow-sm">
+        <!-- Colonna Sinistra (1/3) -->
+        <div class="col-md-4 p-0 left-col-bg">
+            <div class="p-3">
+                <h5 class="h6 fw-bold mb-3 text-uppercase text-muted" style="letter-spacing: 1px;">Features Selection</h5>
+
+                {% if error %}
+                    <div class="alert alert-danger p-2 small" style="font-size: 0.75rem;">{{ error }}</div>
+                {% endif %}
+
+                <form method="post" id="mainForm" class="small">
+                    {% csrf_token %}
+                    <div class="mb-3 custom-as-p-form">
+                        {{ form.as_p }}
+                    </div>
+
+                    <input type="hidden" name="hidden_decimal_lat" id="id_hidden_decimal_lat" value="41.12">
+                    <input type="hidden" name="hidden_decimal_lon" id="id_hidden_decimal_lon" value="16.87">
+
+                    <button type="submit" class="btn btn-dark w-100 btn-sm py-2 fw-bold">
+                        Check Availability
+                    </button>
+                </form>
+
+                <!-- Risultati della ricerca -->
+                <div class="result_list mt-3">
+                    {% if selCars != None %}
+                        {{ selCars|json_script:"json-selCars" }}
+                        {{ userPos|json_script:"json-userPos" }}
+
+                        <h6 class="fw-bold mb-2 small text-success">{{ selCars|length }} vehicles nearby</h6>
+
+                        <div class="car-results-container border">
+                            {% for car in selCars %}
+                            <div class="car-mini-card shadow-sm border-bottom border-primary border-2">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-dark h6 mb-0">{{ car.license_plate }}</span>
+                                    <span class="badge bg-light text-success border">{{ car.hourly_rate }} €/h</span>
+                                </div>
+                                <p class="extra-small text-muted mb-2" style="font-size: 0.75rem; line-height: 1.3;">
+                                    Doors: {{ car.doors }} • Seats: {{ car.seats }} • Range: {{ car.range_km }} km<br>
+                                    <i class="bi bi-geo-alt"></i> Your distance: {{ car.distance_meters|floatformat:"0" }} m
+                                </p>
+                                <a href="{% url 'payment_initiate' car.id %}" class="btn btn-rent w-100 py-1 shadow-sm">
+                                    Rent Now
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonna Destra (2/3): Mappa -->
+        <div class="col-md-8 p-0 bg-light">
+            <div id="RentalsMap"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block extra_js %}
+   <script>
+        var map, marker, markerGroup;
+                                            // Inizalizza la mappa Leaflet
+        function initializeMap()
+        {
+            const initialZoom = 15;
+            const initialCoords = [41.12, 16.87]; // Bari
+
+            var map = L.map('RentalsMap', {
+                center: initialCoords,      // Centro iniziale della mappa
+                zoom: initialZoom,          // Livello di zoom iniziale
+                minZoom: 10,                // Livello di zoom minimo (più lontano)
+                maxZoom: 18                 // Livello di zoom massimo (più vicino)
+            });
+
+                                            // OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; [OpenStreetMap](www.openstreetmap.org) contributors'
+            }).addTo(map);
+
+                                            // Crea il marker della posizione dell'utente
+            marker = L.marker(initialCoords, {draggable:true} ).addTo(map);
+            marker.bindPopup("Your Position");
+
+                                            // LayerGroup per rimuovere in blocco i markers
+                                            // ad ogni nuova selezione
+            markerGroup = L.layerGroup();
+            map.addLayer(markerGroup);
+
+                                            // listener per l'evento 'click' sulla mappa
+            map.on('click', onMapClick);
+
+            updateUserPos();
+            loadCarSelectionMarkers();
+        }
+
+        function onMapClick(e)
+        {
+            marker.setLatLng(e.latlng);
+        }
+
+                                            // Initialization la mappa Leaflet
+        initializeMap();
+
+                                            // codice JavaScript eseguito prima di inviare la form
+        document.getElementById('mainForm').addEventListener('submit', function()
+        {
+            coords = marker.getLatLng();
+
+                                            // valori per gli "hidden fields" usati per Lat e Lon
+            document.getElementById('id_hidden_decimal_lat').value = coords.lat.toFixed(6);
+            document.getElementById('id_hidden_decimal_lon').value = coords.lng.toFixed(6);
+        });
+
+        function updateUserPos()
+        {
+            const jsonElement = document.getElementById('json-userPos');
+
+            if (jsonElement && jsonElement.textContent)
+            {
+                try
+                {
+                    markerPos = JSON.parse(jsonElement.textContent);
+                    lat = parseFloat(markerPos.lat);
+                    lon = parseFloat(markerPos.lon);
+
+                    marker.setLatLng([lat, lon]);
+                } catch (e) {
+                    console.error("Error parsing JSON:", e);
+                }
+            }
+        }
+
+        function loadCarSelectionMarkers()
+        {
+            let selectedCars = [];
+
+            const jsonElement = document.getElementById('json-selCars');
+
+            if (jsonElement && jsonElement.textContent)
+            {
+                try
+                {
+                    markerGroup.clearLayers();
+                    selectedCars = JSON.parse(jsonElement.textContent);
+
+                    selectedCars.forEach(car =>
+                    {
+                        var marker = L.marker([car.lat, car.lon])
+                            .addTo(markerGroup)
+                            .bindPopup(car.license_plate);
+
+                        marker._icon.classList.add('marker-red-filter');
+                    });
+
+                } catch (e) {
+                                            // Se il parsing fallisce (es. il JSON è corrotto)
+                                            // gestiamo l'errore
+                    console.error("Error parsing JSON:", e);
+                }
+            } else {
+                                            // Se l'elemento non esiste o è vuoto
+                console.log("Nessun dato JSON 'json-selCars' trovato nel DOM o l'elemento è vuoto.");
+            }
+        }
+
+    </script>
+
+{% endblock extra_js %}
+

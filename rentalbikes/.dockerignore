@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Ambienti virtuali (NON devono entrare nel container)
+venv/
+env/
+.venv/
+
+# Database locali (per evitare di sovrascrivere il DB del container)
+*.sqlite3
+
+# Git e configurazioni IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# File di sistema Windows
+Thumbs.db
+desktop.ini
+
+# File di log e temporanei
+*.log
+tmp/

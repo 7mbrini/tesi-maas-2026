@@ -1,0 +1,172 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} About | rentalbikes {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 0;
+        }
+
+        .page-title {
+            font-weight: 600;
+            color: var(--rental-dark);
+            font-size: 1.15rem;
+            margin-right: 10px;
+        }
+
+        .header-sub {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .policy-text {
+            font-size: 0.88rem;
+            line-height: 1.4;
+            text-align: justify;
+            color: #475569;
+        }
+
+        .policy-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 1.1rem;
+            border-radius: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        h2.section-h {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--rental-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid var(--rental-green);
+            padding-left: 0.6rem;
+        }
+
+        .text-electric {
+            color: var(--rental-green);
+            font-weight: 600;
+        }
+
+        .feature-item {
+            font-size: 0.82rem;
+            color: #64748b;
+            margin-bottom: 0.4rem;
+        }
+
+        .small-icon {
+            color: var(--rental-green);
+            margin-right: 8px;
+            font-size: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .content-wrapper {
+            padding-bottom: 3rem;
+        }
+
+        .service-highlight {
+            background-color: #f8fafc;
+            border-radius: 0.6rem;
+            padding: 1rem;
+            border: 1px solid #f1f5f9;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0 content-wrapper">
+
+    <header class="hero-minimal mb-3">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <h1 class="page-title mb-0">About Us</h1>
+                <span class="header-sub d-none d-sm-inline">Bari Electric Mobility</span>
+            </div>
+            <span class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">
+                100% Electric • 2025 <i class="bi bi-lightning-charge"></i>
+            </span>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Single Central Column -->
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+
+                <section class="mb-4">
+                    <p class="policy-text">
+                        <strong>rentalbikes S.r.l.</strong> specializes in the short-term rental of compact electric vehicles.
+                        We are the leading partner for those seeking <span class="text-electric">smart, fast, and sustainable</span>
+                        urban mobility in the heart of Puglia.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="section-h">Urban & Fast</h2>
+                    <div class="policy-box shadow-sm">
+                        <p class="mb-0 policy-text">
+                            We eliminate bureaucracy and waiting times. Our focus is on city travel,
+                            providing compact vehicles that are easy to park and ready for use by
+                            both local residents and visiting tourists.
+                        </p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="section-h">Our Agile Fleet</h2>
+                    <div class="policy-box shadow-sm">
+                        <div class="row g-0">
+                            <div class="col-6">
+                                <div class="feature-item"><i class="bi bi-circle-fill small-icon"></i>Micro-cars</div>
+                                <div class="feature-item"><i class="bi bi-circle-fill small-icon"></i>City-cars</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="feature-item"><i class="bi bi-circle-fill small-icon"></i>100% Electric</div>
+                                <div class="feature-item"><i class="bi bi-circle-fill small-icon"></i>Easy Parking</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mt-4">
+                    <div class="service-highlight">
+                        <div class="row text-center g-3">
+                            <div class="col-4">
+                                <i class="bi bi-clock-history text-success d-block mb-1"></i>
+                                <span class="fw-bold d-block" style="font-size: 0.7rem; color: var(--rental-dark);">SHORT-TERM</span>
+                            </div>
+                            <div class="col-4 border-start">
+                                <i class="bi bi-p-square text-success d-block mb-1"></i>
+                                <span class="fw-bold d-block" style="font-size: 0.7rem; color: var(--rental-dark);">ZTL READY</span>
+                            </div>
+                            <div class="col-4 border-start">
+                                <i class="bi bi-phone text-success d-block mb-1"></i>
+                                <span class="fw-bold d-block" style="font-size: 0.7rem; color: var(--rental-dark);">DIGITAL</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+

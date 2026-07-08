@@ -1,0 +1,121 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Update Profile | rentalbikes {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-weight: 500;
+            color: var(--rental-dark);
+            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            display: inline-block;
+        }
+
+        .auth-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            margin: 25px auto; /* Posizione rialzata per risparmiare spazio */
+        }
+
+        .auth-box p {
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--rental-dark);
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.4rem;
+            margin-top: 4px;
+        }
+
+        .btn-update-submit {
+            background-color: var(--rental-green);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+
+        .btn-change-pw {
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            color: var(--rental-dark);
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 0.4rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-change-pw:hover {
+            background-color: #e2e8f0;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <header class="hero-minimal text-center mb-3">
+        <div class="container">
+            <h1 class="page-title mb-0">Update Profile</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="auth-box shadow-sm">
+            <form method="post" class="mb-3">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="d-flex gap-2 align-items-center">
+                    <button type="submit" class="btn-update-submit shadow-sm">
+                        Update Account
+                    </button>
+                    <a href="{% url 'user_detail' user.pk %}" class="btn btn-sm btn-link text-muted text-decoration-none small">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+
+            <div class="text-center mt-4 pt-3 border-top">
+                <p class="small text-muted mb-2">Need to secure your account?</p>
+                <a href="{% url 'change_password' %}" class="btn-change-pw">
+                    <i class="bi bi-shield-lock me-1"></i> Change the password
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

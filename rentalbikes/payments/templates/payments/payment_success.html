@@ -1,0 +1,72 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Payment Success | rentalbikes {% endblock title %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <!-- Success Header (Sizes reduced) -->
+            <div class="text-center mb-3">
+                <div class="h3 text-success mb-2">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h4 class="fw-bold mb-1">Payment Successful!</h4>
+                <p class="small text-muted mb-0">Thank you for your purchase.
+                    <br>We have sent rental details to your email address.</p>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-3">
+
+                    <!-- Vehicle Info (Compacted) -->
+                    <div class="text-center mb-1">
+                        <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem;">Vehicle Information</p>
+                        <p class="mb-1" style="font-size: 0.9rem;">You are authorized to use
+                            <br>the car with license plate:</p>
+                        <div class="bg-light border rounded py-1 mb-1">
+                            <span class="h4 fw-bold mb-0">BA3453</span>
+                        </div>
+                        <p class="text-muted fw-bold mb-0" style="font-size: 0.75rem;">Available for the purchased rental duration.</p>
+                    </div>
+
+                    <hr class="my-2">
+
+                    <!-- Activation Section (Sized down) -->
+                    <div class="text-center mb-3">
+                        <p class="mb-2" style="font-size: 0.9rem;">To unlock the car<br>
+                            enter this <strong>activation code</strong>
+                            <br>on the vehichle keypad:</p>
+                        <div class="p-2 bg-primary text-white rounded shadow-sm d-inline-block px-4">
+                            <span class="h3 fw-mono fw-bold mb-0">{{ token }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Important Notices (Small text) -->
+                    <div class="alert alert-warning border-0 p-2 mb-0" style="font-size: 0.75rem;">
+                        <p class="mb-1">
+                            <strong><i class="bi bi-exclamation-triangle"></i> Important:</strong>
+                            This activation code is valid for the next <strong>30 minutes</strong>.
+                        </p>
+                        <p class="mb-0 text-danger fw-bold">
+                            Once this period expires, the rental is considered active and is no longer eligible for a refund.
+                        </p>
+                    </div>
+
+                </div>
+                <div class="card-footer bg-transparent border-0 text-center py-2">
+                    <p class="text-muted mb-0" style="font-size: 0.7rem;">
+                        For policies information visit:
+                        <span><a href="{% url 'policies' %}" class="text-decoration-none">www.rentalbikes.com/policies</a></span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

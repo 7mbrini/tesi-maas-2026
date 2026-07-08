@@ -1,0 +1,46 @@
+# --- PROTEZIONE CARTELLE VPS ---
+# Aggiungiamo dashboard affinché rsync --delete non la tocchi sul server
+dashboard/
+
+# --- AMBIENTE E SEGRETI ---
+debug.env
+.env
+.venv/
+venv/
+env/
+.idea/
+.git/
+*.pyc
+*.bak
+
+
+# --- CACHE E TEMPORANEI PYTHON ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- DATABASE E MEDIA (Dati persistenti) ---
+# Escludiamo il db sqlite locale e le cartelle che Docker gestisce sul server
+db.sqlite3
+db.sqlite3-journal
+media/
+# static/
+
+# --- STRUMENTI DI DEPLOY E VERSIONAMENTO ---
+.git/
+deploy.sh
+backup.sh
+restore.sh
+connect.sh
+exclude.txt
+reset_docker.bat
+wipe_docker.bat
+reset_github.bat
+
+# --- FILE DI SISTEMA WINDOWS/IDE ---
+.idea/
+.vscode/
+Thumbs.db
+
+# --- BACKUPS
+backups/

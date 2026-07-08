@@ -1,0 +1,88 @@
+<!-- (C) 2025 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Payments | rentalbikes {% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <!-- Card Principale -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white p-3">
+                    <h2 class="h4 mb-0 text-center">Initiate Payment</h2>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Gestione Messaggi (Alert Bootstrap) -->
+                    {% if messages %}
+                        <div class="messages mb-4">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Form di Pagamento -->
+                    <form action="{% url 'payment_pay' %}" method="post" class="needs-validation">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            {% for field in form %}
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <div class="form-text">{{ field.help_text }}</div>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Pulsante di Invio -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-credit-card me-2"></i>Proceed to Pay
+                            </button>
+                            <a href="javascript:history.back()" class="btn btn-link text-muted btn-sm">
+                                Go Back
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Footer  -->
+            <p class="text-center text-muted mt-3 small">
+                <i class="bi bi-lock-fill"></i> Secure encrypted transaction
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Script per iniettare le classi Bootstrap nei campi Django -->
+<script>
+    document.querySelectorAll('input, select, textarea').forEach(function(el) {
+        if (el.type !== 'checkbox' && el.type !== 'radio') {
+            el.classList.add('form-control');
+        } else {
+            el.classList.add('form-check-input');
+        }
+    });
+</script>
+
+{% endblock content %}
+
+
+k

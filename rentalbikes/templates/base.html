@@ -1,0 +1,134 @@
+<!-- (C) 2026 Francesco Settembrini -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <link rel="icon" href="{% static 'main/images/favicon.png' %}" type="image/x-icon">
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">s
+
+    <!-- Leaflet CSS CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="anonymous"/>
+
+    <title>{% block title %}rentalbikes{% endblock %}</title>
+</head>
+
+{% block extra_head %}{% endblock extra_head %}
+<!--<body>-->
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navigation Bar (Menu Bar) -->
+<!--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top p-3 m-0">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                rentalbikes
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'fleet' %}">Fleet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'policies' %}">Policies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'contacts' %}">Contacts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 active" aria-current="page" href="{% url 'rentals' %}">Rentals</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="nav-link mx-3 active" href="{% url 'login' %}">
+                            {% if not user.is_authenticated %}
+                                <a href="{% url 'login' %}" class="text-white">Login</a>
+                            {% else %}
+                                <span>Welcome, {{ user.username }}!</span>
+                                <a href="{% url 'logout' %}"  class="text-white">Logout</a>
+                                <span class="text-white"> | </span>
+                                <a href="{% url 'user_update' user.pk %}" class="text-white">Edit</a>
+                            {% endif %}
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+
+   <main class="flex-grow-1" style="margin-top:48px">
+        {% block content %}
+        <!-- Child templates will fill this space -->
+        {% endblock %}
+<!--    </main>-->
+   </main>
+<!--</body>-->
+
+<!-- Footer Section -->
+<footer class="footer text-center bg-dark text-white m-0 p-3">
+    <div class="container">
+        <!-- The row sets up the flex container and aligns items vertically -->
+        <div class="row align-items-center">
+
+            <!-- Left Column: Copyright Info (col-md-4) -->
+            <div class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+                <p class="mb-0">
+                    &copy; 2026 RentalBikes s.r.l.
+                </p>
+            </div>
+
+                <!-- ICONE SOCIAL (caricate localmente) -->
+                <div class="col-md-4 d-flex justify-content-center mb-3 mb-md-0">
+                    <a href="#" class="text-white mx-2"><i class="bi bi-facebook fs-4"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="bi bi-instagram fs-4"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="bi bi-twitter-x fs-4"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="bi bi-linkedin fs-4"></i></a>
+                </div>
+
+            <!-- Right Column: Address and Phone Info (col-md-4) -->
+            <div class="col-md-4 d-flex justify-content-center justify-content-md-end">
+                <div class="text-center text-md-end">
+                    <p class="mb-0">Bari, Via Cavour 123</p>
+                    <p class="mb-0">Phone: (080) 123456</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+    <!-- Bootstrap JS CDN -->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+         crossorigin=""></script>
+
+    {% block extra_js %}{% endblock extra_js %}
+
+</body>
+</html>
+

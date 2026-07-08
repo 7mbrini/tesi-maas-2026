@@ -1,0 +1,68 @@
+services:
+  db:
+    image: pgrouting/pgrouting:16-3.4-3.6.1
+    container_name: rentalbikes-db
+    restart: unless-stopped
+    volumes:
+      - rentalbikes_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - path: production.env
+        required: false
+    environment:
+      - POSTGRES_DB=${DB_NAME:-rentalbikes}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+    ports:
+      - "5520:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-rentalbikes}"]
+      interval: 10s   
+      timeout: 5s
+      retries: 6      
+      start_period: 15s 
+
+  redis:
+    image: redis:7-alpine
+    container_name: rentalbikes-redis
+    restart: unless-stopped
+    ports:
+      - "6520:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  web:
+    build: .
+    container_name: rentalbikes-web
+    restart: unless-stopped
+    env_file:
+      - path: debug.env
+        required: false
+      - path: production.env
+        required: false
+    volumes:
+      - .:/app
+    ports:
+      - "8520:8000"
+    environment:
+      - DB_HOST=db
+      - REDIS_HOST=redis
+      - PYTHONUNBUFFERED=1
+      - DB_NAME=${DB_NAME:-rentalbikes}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_PORT=5432
+    # Aggiunto il blocco di dipendenza condizionale sull'healthcheck del DB
+    depends_on:
+      db:
+        condition: service_healthy
+    # Rimosso lo "sleep 5" dal comando di avvio
+    command: >
+      sh -c "python manage.py migrate --noinput && 
+             python manage.py shell -c \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@email.com', 'admin')\" && 
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  rentalbikes_postgres_data:

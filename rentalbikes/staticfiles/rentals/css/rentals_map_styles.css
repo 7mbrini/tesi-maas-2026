@@ -1,0 +1,9 @@
+/* cars/static/cars/css/rentals_map_styles.css */
+
+#mapid {
+    height: 600px; /* Essential: The map container needs a defined height */
+    width: 100%;
+}
+body {
+    padding-top: 20px; /* Add some top margin to the body */
+}
