@@ -1,0 +1,117 @@
+<!-- (C) 2026 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} My Account | RentalCars {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+            --rental-danger: #ef4444;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .page-title {
+            font-weight: 500;
+            color: var(--rental-dark);
+            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            display: inline-block;
+        }
+
+        /* Card Account */
+        .account-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            max-width: 550px;
+            margin: 30px auto;
+        }
+
+        .btn-edit {
+            background-color: var(--rental-green);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 6px 15px;
+            border-radius: 0.4rem;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
+        .btn-delete-link {
+            color: var(--rental-danger);
+            font-size: 0.8rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-login-main {
+            background-color: var(--rental-green);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+
+    <header class="hero-minimal text-center mb-3">
+        <div class="container">
+            <h1 class="page-title mb-0">Settings</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="account-box shadow-sm">
+            {% if user.is_authenticated %}
+                <h3 class="h6 fw-bold text-uppercase text-muted mb-4" style="letter-spacing: 1px;">Manage your account</h3>
+
+                <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded border">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person-circle fs-4 text-success me-3"></i>
+                        <a href="{% url 'user_detail' user.pk %}" class="text-dark fw-bold text-decoration-none">
+                            {{ user.username }}
+                        </a>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center">
+                        <a href="{% url 'user_delete' user.pk %}" class="btn-delete-link small">Delete</a>
+                        <a href="{% url 'user_update' user.pk %}" class="btn-edit shadow-sm">Edit</a>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center border-top pt-3">
+                    <p class="extra-small text-muted mb-0" style="font-size: 0.75rem;">
+                        <i class="bi bi-shield-check"></i> Connected as {{ user.email }}
+                    </p>
+                </div>
+
+            {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-lock text-muted display-5 mb-3"></i>
+                    <h3 class="h5 fw-bold text-dark mb-4">You are not logged in.</h3>
+                    <a href="{% url 'login' %}" class="btn-login-main shadow-sm">
+                        Go to Login
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

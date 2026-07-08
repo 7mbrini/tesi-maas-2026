@@ -1,0 +1,82 @@
+<!-- (C) 2026 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Home | RentalCars {% endblock title %}
+
+{% block content %}
+<!-- da BootStrap ;-) -->
+<!-- The main Carousel container -->
+<div class="container-fluid p-0">
+<div id="carousel" class="carousel slide p-0 m-0" data-bs-ride="carousel" data-bs-pause="false">
+
+    <!-- 1. Indicators (the dots at the bottom) -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+    </div>
+
+    <!-- 2. The Slides (Images/Content) -->
+    <div class="carousel-inner">
+        <!-- Slide 1: MUST have the 'active' class initially -->
+        <div class="carousel-item active">
+            <!-- Replace '...' with your image path and alt text -->
+            <img src="{% static 'main/images/rentalcars_01.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 1">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Drive Green, Drive Today.</h5>
+            </div>
+        </div>
+        <!-- Slide 1: MUST have the 'active' class initially -->
+        <div class="carousel-item">
+            <!-- Replace '...' with your image path and alt text -->
+            <img src="{% static 'main/images/rentalcars_02.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 2">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Electrify Your Journey.</h5>
+            </div>
+        </div>
+        <!-- Slide 1: MUST have the 'active' class initially -->
+        <div class="carousel-item">
+            <!-- Replace '...' with your image path and alt text -->
+            <img src="{% static 'main/images/rentalcars_03.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 3">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>The Future of Mobility. Available Now.</h5>
+            </div>
+        </div>
+        <!-- Slide 1: MUST have the 'active' class initially -->
+        <div class="carousel-item">
+            <!-- Replace '...' with your image path and alt text -->
+            <img src="{% static 'main/images/rentalcars_04.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 4">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Silent Miles, Zero Emissions.</h5>
+            </div>
+        </div>
+        <!-- Slide 1: MUST have the 'active' class initially -->
+        <div class="carousel-item">
+            <!-- Replace '...' with your image path and alt text -->
+            <img src="{% static 'main/images/rentalcars_05.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 5">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Rent Electric. Change the Current.</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Controls (Previous/Next Arrows) -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+
+</div>
+</div>
+
+{% endblock content %}
+
+

@@ -1,0 +1,42 @@
+# Bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+# Escludiamo sqlite perché usiamo PostGIS in Docker
+*.sqlite3
+# Escludiamo i file di dump se non necessari
+*.sql
+*.ps1
+*.bat
+*.sh
+# ECCEZIONE: Permetti il caricamento di questo specifico file batch
+!start_project.bat
+!start_project.sh
+
+# Ambienti virtuali
+venv/
+env/
+.venv/
+ENV/
+
+# Variabili d'ambiente (Contengono password!)
+.env
+
+# Media e Statici (Solitamente non si caricano su Git)
+
+# File di sistema e IDE
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+connect.sh
+db.sqlite3
+backup.sh
+deploy.sh
+setup_vps.sh
+vps_info.sh
+
+

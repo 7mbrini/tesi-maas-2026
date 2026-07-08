@@ -1,0 +1,46 @@
+<!-- (C) 2026 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Car Admin - RentalCars{% endblock %}
+
+{% block content %}
+
+<div class="container m-2 p-5">
+    <h1>Edit Car: {{ car.license_plate }}</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary mt-3">Update Car</button>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4 shadow-sm">
+                <h4>Image</h4>
+                    {% if car.image.url != None %}
+                        <img src="{{ car.image.url }}" alt="no image">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'cars/js/map_init.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeLeafletMap(
+                {{ car.location.y }},
+                {{ car.location.x }},
+                "{{ car.license_plate|escapejs }}"
+            );
+        });
+    </script>
+
+{% endblock extra_js %}

@@ -1,0 +1,4 @@
+body { padding-top: 56px; }
+.footer { padding-top: 1rem; padding-bottom: 1rem; background-color: #f4f4f4; position: absolute; bottom: 0; width: 100%; }
+.errorlist { color: red; list-style-type: none; padding-left: 0; }
+#mapid, #map, #home-map { height: 600px; width: 100%; }

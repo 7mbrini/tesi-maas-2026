@@ -1,0 +1,177 @@
+<!-- (C) 2026 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Contacts | RentalCars {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 0;
+        }
+
+        .page-title {
+            font-weight: 600;
+            color: var(--rental-dark);
+            font-size: 1.15rem;
+            margin-right: 10px;
+        }
+
+        .header-sub {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .contact-box {
+            border: 1px solid #f1f5f9;
+            background-color: #ffffff;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2.section-h {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--rental-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--rental-green);
+            padding-left: 0.6rem;
+        }
+
+        .contact-link {
+            color: var(--rental-green);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--rental-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-send {
+            background-color: var(--rental-green);
+            border: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: white;
+        }
+
+        .content-wrapper {
+            padding-bottom: 3rem;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0 content-wrapper">
+
+    <header class="hero-minimal mb-3">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <h1 class="page-title mb-0">Contact Us</h1>
+                <span class="header-sub d-none d-sm-inline">Bari Mobility Hub</span>
+            </div>
+            <span class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">
+                24/7 Support <i class="bi bi-headset"></i>
+            </span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+
+                <!-- CONTACT DETAILS BOX -->
+                <section>
+                    <h2 class="section-h">Our Details</h2>
+                    <div class="contact-box shadow-sm">
+                        <div class="d-flex mb-3 small">
+                            <i class="bi bi-geo-alt text-success me-3 fs-5"></i>
+                            <div>
+                                <span class="d-block fw-bold text-dark">Office</span>
+                                Via Cavour 123, 70121 Bari (BA), Italy
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-3 small border-top pt-3">
+                            <i class="bi bi-envelope text-success me-3 fs-5"></i>
+                            <div>
+                                <span class="d-block fw-bold text-dark">Email</span>
+                                <a href="mailto:rentalcars@mail.com" class="contact-link">rentalcars@mail.com</a>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-0 small border-top pt-3">
+                            <i class="bi bi-telephone text-success me-3 fs-5"></i>
+                            <div>
+                                <span class="d-block fw-bold text-dark">Phone & Support</span>
+                                <a href="tel:080123456" class="contact-link">080-123456</a>
+                                <span class="d-block text-muted mt-1" style="font-size: 0.7rem;">Tech Assistance: 080 123123</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MESSAGE FORM -->
+                <section>
+                    <h2 class="section-h">Send a Message</h2>
+                    <div class="p-1">
+                        <form action="#" method="POST">
+                            {% csrf_token %}
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted mb-1">Full Name</label>
+                                    <input type="text" class="form-control" name="name" placeholder="Your name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted mb-1">Email Address</label>
+                                    <input type="email" class="form-control" name="email" placeholder="email@example.com" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted mb-1">Subject</label>
+                                    <input type="text" class="form-control" name="subject" placeholder="How can we help?">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-muted mb-1">Message</label>
+                                    <textarea class="form-control" name="message" rows="3" placeholder="Write your message here..." required></textarea>
+                                </div>
+                                <div class="col-12 text-end mt-3">
+                                    <button type="submit" class="btn btn-send shadow-sm px-4">
+                                        Send Message <i class="bi bi-send ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

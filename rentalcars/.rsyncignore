@@ -1,0 +1,52 @@
+# ==============================================================================
+# REMOTE INFRASTRUCTURE PROTECTIONS
+# ==============================================================================
+# Cartelle strutturali presenti sul VPS che rsync non deve cancellare o sovrascrivere
+dashboard/
+
+# ==============================================================================
+# ENVIRONMENT AND SECRETS
+# ==============================================================================
+# File di configurazione contenenti credenziali e chiavi segrete
+.env
+debug.env
+
+# ==============================================================================
+# DEPLOYMENT AND SCRIPTING TOOLS
+# ==============================================================================
+# Blocca tutti gli script locali (inclusi .sh, .bat, .ps1) usando i caratteri jolly
+*.sh
+*.bat
+*.ps1
+exclude.txt
+
+# ==============================================================================
+# PYTHON AND DJANGO ARTIFACTS
+# ==============================================================================
+# Cache di compilazione Python e ambienti virtuali locali
+__pycache__/
+.venv/
+venv/
+env/
+*.pyc
+*.py[cod]
+*$py.class
+
+# ==============================================================================
+# LOCAL DATABASES AND BACKUPS
+# ==============================================================================
+# Database di sviluppo locale e directory dei backup
+db.sqlite3
+db.sqlite3-journal
+backups/
+*.bak
+
+# ==============================================================================
+# VERSION CONTROL AND IDE CONFIGURATIONS
+# ==============================================================================
+# File di tracciamento Git e configurazioni dei vari editor (PyCharm, VS Code, OS)
+.git/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

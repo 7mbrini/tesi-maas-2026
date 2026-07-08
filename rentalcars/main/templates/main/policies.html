@@ -1,0 +1,151 @@
+<!-- (C) 2026 Francesco Settembrini -->
+
+{% extends 'base.html' %}
+
+{% block title %} Policies | RentalCars {% endblock title %}
+
+{% block extra_head %}
+    <style>
+        :root {
+            --rental-green: #10b981;
+            --rental-dark: #374151;
+            --rental-light-bg: #f8fafc;
+        }
+
+        .hero-minimal {
+            background-color: var(--rental-light-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 0;
+        }
+
+        .page-title {
+            font-weight: 600;
+            color: var(--rental-dark);
+            font-size: 1.15rem;
+            margin-right: 10px;
+        }
+
+        .zero-deposit-badge {
+            background-color: var(--rental-dark);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .policy-text {
+            font-size: 0.88rem;
+            line-height: 1.4;
+            text-align: justify;
+            color: #475569;
+        }
+
+        .highlight-text { font-weight: 600; color: var(--rental-dark); }
+
+        h2 {
+            font-weight: 700;
+            color: var(--rental-dark);
+            font-size: 0.85rem;
+            border-left: 3px solid var(--rental-green);
+            padding-left: 0.6rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .policy-card {
+            background-color: #ffffff;
+            padding: 0.85rem 1.1rem;
+            border-radius: 0.6rem;
+            border: 1px solid #f1f5f9;
+            margin-bottom: 1rem;
+        }
+
+        .content-wrapper {
+            padding-bottom: 3rem;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+
+<div class="container-fluid p-0 content-wrapper">
+
+    <header class="hero-minimal mb-3">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <h1 class="page-title mb-0">Policies</h1>
+                <span class="zero-deposit-badge">Zero Deposit</span>
+            </div>
+            <span class="text-muted" style="font-size: 0.65rem;">Updated: Jul 2026</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Narrow Central Column -->
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+
+                <!-- 1. Payment -->
+                <section>
+                    <h2>1. Payment</h2>
+                    <div class="policy-card shadow-sm">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge bg-success" style="font-size: 0.6rem;">Debit Cards OK</span>
+                        </div>
+                        <p class="mb-0 policy-text">
+                            <span class="highlight-text">No Security Deposit:</span> We do not hold any funds on your card.
+                            Accepted methods: Visa, Mastercard, Maestro, Apple Pay, and Google Pay.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 2. Eligibility -->
+                <section>
+                    <h2>2. Eligibility</h2>
+                    <div class="policy-card shadow-sm">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-6">
+                                <small class="d-block mb-1"><i class="bi bi-check2 text-success me-1"></i>Age: <span class="highlight-text">18+</span></small>
+                                <small class="d-block"><i class="bi bi-check2 text-success me-1"></i>License: <span class="highlight-text">6+ months</span></small>
+                            </div>
+                            <div class="col-6 border-start ps-3">
+                                <small class="text-muted d-block" style="font-size: 0.75rem;">Under 24:</small>
+                                <span class="highlight-text small">Starter Plan</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Cancellation -->
+                <section>
+                    <h2>3. Cancellation</h2>
+                    <div class="policy-card shadow-sm">
+                        <p class="mb-0 policy-text">
+                            <i class="bi bi-clock-history text-success me-2"></i>
+                            Full refund guaranteed for cancellations made within <span class="highlight-text">30 minutes</span> of purchase.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 4. Activation -->
+                <section>
+                    <div class="alert alert-info border-0 shadow-sm p-3 mb-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold small text-uppercase">4. Activation Code</span>
+                            <span class="badge bg-white text-info border border-info px-2">60 Min</span>
+                        </div>
+                        <p class="mb-0 mt-1 policy-text" style="font-size: 0.8rem;">
+                            The code must be used within 60 minutes of payment to start the rental session.
+                        </p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
