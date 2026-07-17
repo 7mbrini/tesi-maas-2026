@@ -1,7 +1,8 @@
-<!-- (C) 2026 Francesco Settembrini -->
+{# (C) 2026 Francesco Settembrini #}
 
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %} Fleet | RentalCars {% endblock title %}
 
 {% block extra_head %}
@@ -141,23 +142,57 @@
 
 {% block extra_js %}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+
+        function createCarIcon(bgColor)
+        {
+            return L.divIcon({
+                html: `
+                    <div style="background-color: ${bgColor}; width: 36px; height: 36px; border-radius: 8px;border: 2px solid #ffffff;
+                        box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+
+                        <!-- Icona auto vista dall'alto pulita e definita -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
+                        <path fill="#ffffff" d="M496 224h-18.3l-28.5-95.1c-8.9-29.6-36.3-50.1-67.2-50.1H129.9c-30.9
+                            0-58.3 20.5-67.2 50.1L34.3 224H16c-8.8 0-16 7.2-16 16v88c0 13.3 10.7 24 24 24h16v56c0
+                            13.3 10.7 24 24 24h40c13.3 0 24-10.7 24-24v-56h256v56c0 13.3 10.7 24 24 24h40c13.3 0 24-10.7
+                            24-24v-56h16c13.3 0 24-10.7 24-24v-88c0-8.8-7.2-16-16-16zm-361.3-113c2.2-7.4 9.1-12.5
+                            16.9-12.5h204.8c7.8 0 14.6 5.1 16.9 12.5L398.9 200H113.1l21.6-89zM88 288c-13.3
+                            0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm336 0c-13.3 0-24-10.7-24-24s10.7-24
+                            24-24 24 10.7 24 24-10.7 24-24 24zm44-48H44v-16h424v16z"/>
+                        </svg>
+                    </div>
+                `,
+                className: 'custom-car-marker',
+                iconSize: [40, 40],       // Parentesi quadre corrette qui
+                iconAnchor: [20, 20],     // Parentesi quadre corrette qui
+                popupAnchor: [0, -20]
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function()
+        {
             var fleetMap = L.map('fleet-map', {center:[41.123, 16.869], zoom:14, scrollWheelZoom: false});
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap'
             }).addTo(fleetMap);
 
-            {% for car in cars_list %}
-                var marker = L.marker([{{ car.location.y }}, {{ car.location.x }}]).addTo(fleetMap);
+            var carAvailableIcon = createCarIcon('#00aa00');
+            var carUnavailableIcon = createCarIcon('#aa0000');      // rosso per le auto gia' noleggiate
 
+            {% for car in cars_list %}
                 {% if car.available %}
+                    var marker = L.marker([{{ car.location.y }}, {{ car.location.x }}], { icon: carAvailableIcon } ).addTo(fleetMap);
                     marker.bindPopup("<div class='small'><strong>{{ car.license_plate }}</strong><br>Status: available</div>");
                 {% else %}
+                    var marker = L.marker([{{ car.location.y }}, {{ car.location.x }}], { icon: carUnavailableIcon } ).addTo(fleetMap);
                     marker.bindPopup("<div class='small'><strong>{{ car.license_plate }}</strong><br>Status: rented</div>");
-                    marker._icon.classList.add('marker-color-rented');
+                    //marker._icon.classList.add('marker-color-rented');
                 {% endif %}
             {% endfor %}
         });
+
+
+
     </script>
-    
+
 {% endblock extra_js %}

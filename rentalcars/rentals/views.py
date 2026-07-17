@@ -13,19 +13,6 @@ from django.conf import settings
 from cars.models import Car
 
 
-# =============================================================================
-# Restituisca la connessione al database PosgreSQL (PostGIS)
-# =============================================================================
-# def get_db_connection():
-#     connection = psycopg2.connect(
-#         dbname="rentalcars",
-#         user="postgres",
-#         password="postgres",
-#         host="db",
-#         port="5432",
-#     )
-#
-#     return connection
 # # =============================================================================
 # # Restituisca la connessione al database PosgreSQL (PostGIS)
 # # =============================================================================

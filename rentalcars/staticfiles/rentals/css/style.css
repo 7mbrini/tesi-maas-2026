@@ -1,0 +1,91 @@
+
+#mapid {
+    height: 600px; /* Essential: The map container needs a defined height */
+    width: 100%;
+}
+body {
+    padding-top: 20px; /* Add some top margin to the body */
+}
+
+:root {
+    --rental-green: #10b981;
+    --rental-dark: #374151;
+    --rental-light-bg: #f8fafc;
+    /* Offset aggiornato: 192px + 16px = 208px */
+    --offset-height: 208px;
+}
+
+.hero-minimal {
+    background-color: var(--rental-light-bg);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 0;
+}
+
+.page-title {
+    font-weight: 500;
+    color: var(--rental-dark);
+    letter-spacing: -0.5px;
+    font-size: 1.25rem;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.header-sub {
+    font-size: 0.85rem;
+    color: #64748b;
+    display: inline-block;
+}
+
+.main-row-container {
+    height: calc(100vh - var(--offset-height));
+    min-height: 300px;
+    display: flex;
+    overflow: hidden;
+}
+
+.left-col-bg {
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    overflow-y: auto;
+}
+
+/* MAPPA: Full height della colonna destra */
+#RentalsMap {
+    height: 100%;
+    width: 100%;
+}
+
+.form-label { font-weight: 500; font-size: 0.85rem; }
+
+.car-results-container {
+    max-height: 220px; /* Adattato alla nuova altezza */
+    overflow-y: auto;
+    background-color: var(--rental-light-bg);
+    border-radius: 0.5rem;
+    padding: 8px;
+}
+
+.car-mini-card {
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 12px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+}
+
+.car-mini-card:hover { border-color: var(--rental-green); }
+
+.btn-rent {
+    background-color: var(--rental-green);
+    color: white;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.marker-red-filter {
+  filter: hue-rotate(240deg);
+}

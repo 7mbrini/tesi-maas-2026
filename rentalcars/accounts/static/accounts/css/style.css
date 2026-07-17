@@ -1,0 +1,136 @@
+/* (C) 2026 Francesco Settembrini */
+
+:root {
+    --rental-green: #10b981;
+    --rental-dark: #374151;
+    --rental-light-bg: #f8fafc;
+    --rental-danger: #ef4444;
+}q
+
+/* ==========================================
+   1. STRUTTURA INTESTAZIONE
+   ========================================== */
+.hero-minimal {
+    background-color: var(--rental-light-bg) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 10px 0 !important;
+}
+
+.page-title {
+    font-weight: 500 !important;
+    color: var(--rental-dark) !important;
+    letter-spacing: -0.5px !important;
+    font-size: 1.25rem !important;
+    display: inline-block !important;
+}
+
+/* ==========================================
+   2. CONTENITORI PRINCIPALI & PARAGRAFI
+   ========================================== */
+/* Raggruppamento selettore unico per i Box */
+.auth-box, .login-box, .logout-box, .success-box, .account-box, .delete-box {
+    border: 1px solid #f1f5f9 !important;
+    background-color: #ffffff !important;
+    padding: 2rem !important;
+    border-radius: 0.75rem !important;
+    max-width: 480px !important;
+    margin: 30px auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Variante per box di errore/cancellazione */
+.delete-box, .auth-box.box-danger {
+    border-color: #fee2e2 !important;
+}
+
+/* Raggruppamento dei paragrafi interni */
+.auth-box p, .login-box p, .logout-box p, .success-box p, .account-box p, .delete-box p {
+    margin-bottom: 1rem !important;
+    font-size: 0.9rem !important;
+    color: var(--rental-dark) !important;
+}
+
+/* ==========================================
+   3. ELEMENTI DEI FORM DJANGO (INPUT & LABEL)
+   ========================================== */
+/* Intercettazione compatta di tutti gli input */
+.auth-box input, .login-box input, .logout-box input, .success-box input, .account-box input, .delete-box input {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 8px 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.4rem !important;
+    margin: 5px 0 4px 0 !important; /* Compattato margin-top e margin-bottom */
+    display: block !important;
+    box-sizing: border-box !important;
+    background-color: #ffffff !important;
+    color: var(--rental-dark) !important;
+}
+
+/* Nasconde i token CSRF invisibili */
+.auth-box input[type="hidden"], .login-box input[type="hidden"], .logout-box input[type="hidden"],
+.success-box input[type="hidden"], .account-box input[type="hidden"], .delete-box input[type="hidden"] {
+    display: none !important;
+}
+
+/* Gestione compatta delle Label */
+.auth-box label, .login-box label, .logout-box label, .success-box label, .account-box label, .delete-box label {
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    color: var(--rental-dark) !important;
+    display: block !important;
+    margin-top: 8px !important;
+    text-align: left !important;
+}
+
+/* ==========================================
+   4. BOTTONI DI SOTTOMISSIONE & VARIANTI
+   ========================================== */
+/* Corretto l'errore logico: rimosso inline-block a favore di block poiché width è 100% */
+.btn-action-submit, .btn-login-submit, .btn-register-submit, .btn-action,
+.btn-login, .btn-edit, .btn-login-main,
+.auth-box button[type="submit"], .login-box button[type="submit"] {
+    background-color: var(--rental-green) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 10px 20px !important;
+    border-radius: 0.5rem !important;
+    width: 100% !important;
+    display: block !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s !important;
+    cursor: pointer !important;
+    margin-top: 10px !important;
+}
+
+/* Effetto Hover unico e compatto per tutti i bottoni */
+.btn-action-submit:hover, .btn-login-submit:hover, .btn-register-submit:hover,
+.btn-action:hover, .btn-login:hover, .btn-edit:hover, .btn-login-main:hover,
+.auth-box button[type="submit"]:hover, .login-box button[type="submit"]:hover {
+    opacity: 0.9 !important;
+    color: white !important;
+}
+
+/* Variante pulsanti stretti (inline) per gestione account */
+.account-box .btn-edit, .account-box .btn-login-main, .logout-box .btn-login {
+    display: inline-block !important; /* Qui serve inline-block perché la larghezza torna auto */
+    width: auto !important;
+    padding: 6px 15px !important;
+    font-size: 0.8rem !important;
+    border-radius: 0.4rem !important;
+}
+
+/* Pulsanti distruttivi (Elimina Account) */
+.btn-delete, .btn-action-submit.btn-danger, .delete-box button[type="submit"] {
+    background-color: var(--rental-danger) !important;
+    color: white !important;
+}
+
+.btn-delete-link {
+    color: var(--rental-danger) !important;
+    font-size: 0.8rem !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}

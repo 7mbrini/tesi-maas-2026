@@ -10,7 +10,7 @@ import os
 import decimal
 from django.http import HttpResponse
 
-from .models import Transaction
+from .models import Rental
 from cars.models import Car
 from .forms import PaymentInitiateForm, PaymentPayForm
 
@@ -83,19 +83,21 @@ def payment_process(request):
         amount_decimal = decimal.Decimal(amount_str)
 
                                             # memorizza la transazione nel database
-        new_transaction = Transaction.objects.create(
+        new_rental  = Rental.objects.create(
             user = request.user,
             amount = amount_decimal,
             transaction_status = 'completed', # simula che la transazione sia avvenuta con successo
-            gateway_transaction_id = str(uuid.uuid4()) # Example unique ID
+            is_paid = True,
+            gateway_transaction_id = str(uuid.uuid4()) # genera un ID unico per la trasnazione (GUUID)
         )
+
                                             # cancella i valori memorizzati
                                             # temporaneamente nella sessione
         del request.session['pending_amount']
                                             # eventuale feedback per l'utente
         #messages.success(request, "Transaction successfully recorded in the database.")
 
-        token = new_transaction.check_code
+        token = new_rental.check_code
                                             # eventuale feedback per l'utente
         #messages.success(request, f"Transaction recorded. Your code is: {token}")
 
@@ -108,6 +110,7 @@ def payment_process(request):
     except Exception as e:
         messages.error(request, f"A database error occurred: {e}. Transaction failed.")
         return redirect('payment_failure')
+
 
 # =============================================================================
 # Gestisce il pagamento avvenuto con successo

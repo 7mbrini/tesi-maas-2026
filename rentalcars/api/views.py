@@ -25,17 +25,6 @@ def clear_logs():
     print(" NUOVA ESECUZIONE ".center(50, "="))
     print("="*50 + "\n")
 
-# # =============================================================================
-# def get_db_connection():
-#     connection = psycopg2.connect(
-#         dbname="rentalcars",
-#         user="postgres",
-#         password="postgres",
-#         host="db",
-#         port="5432",
-#     )
-#
-#     return connection
 
 def get_db_connection():
     # Estraiamo il dizionario 'default' configurato in settings.py

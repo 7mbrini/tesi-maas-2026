@@ -39,7 +39,7 @@ licensing URL accordingly. For example:
 
 * Original:
 ```xml
-<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
 ```
 * Updated:
 ```xml
@@ -53,7 +53,7 @@ licensing URL accordingly. For example:
 3. Include the following attribution comment at the top of the file (do not
    change it):
 ```xml
-<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+<!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
 ```
 4. Right before the `<path>` element, add the following metadata comment with
    the appropriate values:
@@ -69,7 +69,7 @@ licensing URL accordingly. For example:
 
 ```xml
 <svg width="13" height="13" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-  <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+  <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
   <!--
     Icon Name: plus
     Icon Family: classic

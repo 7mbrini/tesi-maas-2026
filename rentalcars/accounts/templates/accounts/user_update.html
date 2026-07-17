@@ -1,81 +1,12 @@
-<!-- (C) 2026 Francesco Settembrini -->
+{# (C) 2026 Francesco Settembrini #}
 
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %} Update Profile | RentalCars {% endblock title %}
+{% block title %} RentalCars | Update Profile {% endblock title %}
 
 {% block extra_head %}
-    <style>
-        :root {
-            --rental-green: #10b981;
-            --rental-dark: #374151;
-            --rental-light-bg: #f8fafc;
-        }
-
-        .hero-minimal {
-            background-color: var(--rental-light-bg);
-            border-bottom: 1px solid #e2e8f0;
-            padding: 10px 0;
-        }
-
-        .page-title {
-            font-weight: 500;
-            color: var(--rental-dark);
-            letter-spacing: -0.5px;
-            font-size: 1.25rem;
-            display: inline-block;
-        }
-
-        .auth-box {
-            border: 1px solid #f1f5f9;
-            background-color: #ffffff;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            max-width: 500px;
-            margin: 25px auto; /* Posizione rialzata per risparmiare spazio */
-        }
-
-        .auth-box p {
-            margin-bottom: 0.75rem;
-            font-size: 0.85rem;
-            color: var(--rental-dark);
-        }
-
-        .auth-box input {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.4rem;
-            margin-top: 4px;
-        }
-
-        .btn-update-submit {
-            background-color: var(--rental-green);
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 8px 20px;
-            border-radius: 0.5rem;
-            width: 100%;
-            transition: opacity 0.2s;
-        }
-
-        .btn-change-pw {
-            border: 1px solid #e2e8f0;
-            background-color: #f8fafc;
-            color: var(--rental-dark);
-            font-size: 0.8rem;
-            font-weight: 500;
-            padding: 6px 12px;
-            border-radius: 0.4rem;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-change-pw:hover {
-            background-color: #e2e8f0;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}?v=3">
 {% endblock extra_head %}
 
 {% block content %}

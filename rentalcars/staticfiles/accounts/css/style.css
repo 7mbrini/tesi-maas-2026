@@ -1,0 +1,182 @@
+/* accounts/static/accounts/css/style.css */
+/* (C) 2026 Francesco Settembrini - Tesi Project Work */
+
+:root {
+    --rental-green: #10b981;
+    --rental-dark: #374151;
+    --rental-light-bg: #f8fafc;
+    --rental-danger: #ef4444;
+}
+
+/* ==========================================
+   1. STRUTTURA INTESTAZIONE
+   ========================================== */
+.hero-minimal {
+    background-color: var(--rental-light-bg) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 10px 0 !important;
+}
+
+.page-title {
+    font-weight: 500 !important;
+    color: var(--rental-dark) !important;
+    letter-spacing: -0.5px !important;
+    font-size: 1.25rem !important;
+    display: inline-block !important;
+}
+
+/* ==========================================
+   2. CONTENITORI PRINCIPALI (DEFINIZIONE MULTIPLA)
+   ========================================== */
+.auth-box,
+.login-box,
+.logout-box,
+.success-box,
+.account-box,
+.delete-box {
+    border: 1px solid #f1f5f9 !important;
+    background-color: #ffffff !important;
+    padding: 2rem !important;
+    border-radius: 0.75rem !important;
+    max-width: 480px !important;
+    margin: 30px auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Variante specifica per la cancellazione utente */
+.delete-box,
+.auth-box.box-danger {
+    border: 1px solid #fee2e2 !important;
+}
+
+/* ==========================================
+   3. STRUTTURA PARAGRAFI INTERNI AI BOX
+   ========================================== */
+.auth-box p,
+.login-box p,
+.logout-box p,
+.success-box p,
+.account-box p,
+.delete-box p {
+    margin-bottom: 1rem !important;
+    font-size: 0.9rem !important;
+    color: var(--rental-dark) !important;
+}
+
+/* ==========================================
+   4. SELETTORE UNIVERSALE APERTO PER GLI INPUT
+   ========================================== */
+/* Risolve il problema del Login: intercetta tutti gli input dentro ogni tipo di scatola */
+.auth-box input,
+.login-box input,
+.logout-box input,
+.success-box input,
+.account-box input,
+.delete-box input {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 8px 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.4rem !important;
+    margin-top: 5px !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    background-color: #ffffff !important;
+    color: var(--rental-dark) !important;
+}
+
+/* Evita che i token CSRF nascosti occupino spazio visivo */
+.auth-box input[type="hidden"],
+.login-box input[type="hidden"],
+.logout-box input[type="hidden"],
+.success-box input[type="hidden"],
+.account-box input[type="hidden"],
+.delete-box input[type="hidden"] {
+    display: none !important;
+}
+
+/* ==========================================
+   5. ETICHETTE (LABEL) DEI CAMPI DJANGO
+   ========================================== */
+.auth-box label,
+.login-box label,
+.logout-box label,
+.success-box label,
+.account-box label,
+.delete-box label {
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    color: var(--rental-dark) !important;
+    display: block !important;
+    margin-top: 8px !important;
+    text-align: left !important;
+}
+
+/* ==========================================
+   6. BOTTONI DI SOTTOMISSIONE (DEFINIZIONE MULTIPLA)
+   ========================================== */
+.btn-action-submit,
+.btn-login-submit,
+.btn-register-submit,
+.btn-action,
+.btn-login,
+.btn-edit,
+.btn-login-main,
+.auth-box button[type="submit"],
+.login-box button[type="submit"] {
+    background-color: var(--rental-green) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 10px 20px !important;
+    border-radius: 0.5rem !important;
+    width: 100% !important;
+    display: inline-block !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s !important;
+    cursor: pointer !important;
+    margin-top: 10px !important;
+}
+
+.btn-action-submit:hover,
+.btn-login-submit:hover,
+.btn-register-submit:hover,
+.btn-action:hover,
+.btn-login:hover,
+.btn-edit:hover,
+.btn-login-main:hover,
+.auth-box button[type="submit"]:hover,
+.login-box button[type="submit"]:hover {
+    opacity: 0.9 !important;
+    color: white !important;
+}
+
+/* ==========================================
+   7. VARIANTI SPECIALI ED ECCEZIONI INTERNE
+   ========================================== */
+/* Forza i bottoni inline a non essere larghi al 100% solo se dentro l'account-box */
+.account-box .btn-edit,
+.account-box .btn-login-main,
+.logout-box .btn-login {
+    width: auto !important;
+    padding: 6px 15px !important;
+    font-size: 0.8rem !important;
+    border-radius: 0.4rem !important;
+}
+
+/* Pulsante rosso elimina account */
+.btn-delete,
+.btn-action-submit.btn-danger,
+.delete-box button[type="submit"] {
+    background-color: var(--rental-danger) !important;
+    color: white !important;
+}
+
+.btn-delete-link {
+    color: var(--rental-danger) !important;
+    font-size: 0.8rem !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}

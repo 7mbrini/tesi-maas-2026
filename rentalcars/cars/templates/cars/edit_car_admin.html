@@ -1,4 +1,4 @@
-<!-- (C) 2026 Francesco Settembrini -->
+{# (C) 2026 Francesco Settembrini #}
 
 {% extends 'base.html' %}
 {% load static %}
@@ -32,7 +32,7 @@
 {% endblock content %}
 
 {% block extra_js %}
-    <script src="{% static 'cars/js/map_init.js' %}"></script>
+    <script src="{% static 'cars/js/script.js' %}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             initializeLeafletMap(

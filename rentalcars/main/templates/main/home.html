@@ -1,15 +1,29 @@
-<!-- (C) 2026 Francesco Settembrini -->
+{# (C) 2026 Francesco Settembrini #}
 
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Home | RentalCars {% endblock title %}
+{% block title %} RentalCars | Home {% endblock title %}
+
+{% block extra_head %}
+<!-- Cambia lo sfondo in nero SOLO per questa pagina e uniforma il testo dei titoli -->
+<style>
+    body, main {
+        background-color: #aaaaaa !important;
+    }
+
+    /* Rende le scritte del carousel ancora più nitide sullo sfondo scuro */
+    .carousel-caption h5 {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+</style>
+{% endblock extra_head %}
 
 {% block content %}
-<!-- da BootStrap ;-) -->
-<!-- The main Carousel container -->
-<div class="container-fluid p-0">
-<div id="carousel" class="carousel slide p-0 m-0" data-bs-ride="carousel" data-bs-pause="false">
+
+<!-- Main Carousel container (Bootstrap) -->
+<div class="container-fluid p-0 m-0" style="margin-top: -4px !important;">
+<div id="carousel" class="carousel slide p-0 m-0" data-bs-ride="carousel" data-bs-pause="false" style="max-height: calc(100vh - 158px); overflow: hidden;">
 
     <!-- 1. Indicators (the dots at the bottom) -->
     <div class="carousel-indicators">
@@ -22,42 +36,37 @@
 
     <!-- 2. The Slides (Images/Content) -->
     <div class="carousel-inner">
-        <!-- Slide 1: MUST have the 'active' class initially -->
+        <!-- Slide 1 -->
         <div class="carousel-item active">
-            <!-- Replace '...' with your image path and alt text -->
-            <img src="{% static 'main/images/rentalcars_01.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 1">
+            <img src="{% static 'main/images/rentalcars_01.jpg' %}" class="d-block w-100 object-fit-cover align-bottom" alt="Homepage Image 1" style="height: calc(100vh - 158px);">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Drive Green, Drive Today.</h5>
             </div>
         </div>
-        <!-- Slide 1: MUST have the 'active' class initially -->
+        <!-- Slide 2 -->
         <div class="carousel-item">
-            <!-- Replace '...' with your image path and alt text -->
-            <img src="{% static 'main/images/rentalcars_02.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 2">
+            <img src="{% static 'main/images/rentalcars_02.jpg' %}" class="d-block w-100 object-fit-cover align-bottom" alt="Homepage Image 2" style="height: calc(100vh - 158px);">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Electrify Your Journey.</h5>
             </div>
         </div>
-        <!-- Slide 1: MUST have the 'active' class initially -->
+        <!-- Slide 3 -->
         <div class="carousel-item">
-            <!-- Replace '...' with your image path and alt text -->
-            <img src="{% static 'main/images/rentalcars_03.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 3">
+            <img src="{% static 'main/images/rentalcars_03.jpg' %}" class="d-block w-100 object-fit-cover align-bottom" alt="Homepage Image 3" style="height: calc(100vh - 158px);">
             <div class="carousel-caption d-none d-md-block">
                 <h5>The Future of Mobility. Available Now.</h5>
             </div>
         </div>
-        <!-- Slide 1: MUST have the 'active' class initially -->
+        <!-- Slide 4 -->
         <div class="carousel-item">
-            <!-- Replace '...' with your image path and alt text -->
-            <img src="{% static 'main/images/rentalcars_04.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 4">
+            <img src="{% static 'main/images/rentalcars_04.jpg' %}" class="d-block w-100 object-fit-cover align-bottom" alt="Homepage Image 4" style="height: calc(100vh - 158px);">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Silent Miles, Zero Emissions.</h5>
             </div>
         </div>
-        <!-- Slide 1: MUST have the 'active' class initially -->
+        <!-- Slide 5 -->
         <div class="carousel-item">
-            <!-- Replace '...' with your image path and alt text -->
-            <img src="{% static 'main/images/rentalcars_05.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Homepage Image 5">
+            <img src="{% static 'main/images/rentalcars_05.jpg' %}" class="d-block w-100 object-fit-cover align-bottom" alt="Homepage Image 5" style="height: calc(100vh - 158px);">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Rent Electric. Change the Current.</h5>
             </div>
@@ -78,5 +87,3 @@
 </div>
 
 {% endblock content %}
-
-

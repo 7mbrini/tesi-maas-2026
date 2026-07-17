@@ -1,0 +1,111 @@
+/* (C) 2026 Francesco Settembrini */
+
+:root {
+    --rental-green: #10b981;
+    --rental-dark: #374151;
+    --rental-light-bg: #f8fafc;
+    --offset-height: 208px;
+}
+
+body {
+    padding-top: 20px;
+}
+
+/* Configurazione di Defaut: SMARTPHONE (Sotto i 768px) */
+.main-row-container {
+    height: auto;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+
+#mapId {
+    height: 450px;
+    width: 100%;
+}
+
+/* Configurazione per PC / TABLET (Dai 768px in su)  */
+@media (min-width: 768px) {
+    .main-row-container {
+        height: calc(100vh - var(--offset-height));
+        flex-direction: row;
+        overflow: hidden;
+    }
+
+    #mapId {
+        height: 100%;
+    }
+}
+
+/* Componenti di interfaccia  */
+.hero-minimal {
+    background-color: var(--rental-light-bg);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 0;
+}
+
+.page-title {
+    font-weight: 500;
+    color: var(--rental-dark);
+    letter-spacing: -0.5px;
+    font-size: 1.25rem;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.header-sub {
+    font-size: 0.85rem;
+    color: #64748b;
+    display: inline-block;
+}
+
+.left-col-bg {
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    overflow-y: auto;
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.car-results-container {
+    max-height: calc(100vh - 540px);
+    min-height: 150px;
+    overflow-y: auto;
+    background-color: var(--rental-light-bg);
+    border-radius: 0.5rem;
+    padding: 8px;
+    padding-bottom: 16px;
+}
+
+.car-mini-card {
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 12px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+}
+
+.car-mini-card:hover {
+    border-color: var(--rental-green);
+}
+
+.btn-rent {
+    background-color: var(--rental-green);
+    color: white;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+/* Leaflet */
+.marker-red-filter {
+    filter: hue-rotate(240deg);
+}
+
