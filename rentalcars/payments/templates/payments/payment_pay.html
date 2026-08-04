@@ -2,7 +2,7 @@
 
 {% extends 'base.html' %}
 
-{% block title %} Payments | RentalCars {% endblock title %}
+{% block title %} RentalCars | Payments {% endblock title %}
 
 {% block content %}
 
@@ -30,7 +30,41 @@
                         </div>
                     {% endif %}
 
-                    <!-- Form di Pagamento -->
+                    <!-- RIEPILOGO COMPOSIZIONE PREZZO FINALE (READ-ONLY) -->
+                    <div class="mb-4 p-3 bg-white border rounded shadow-sm">
+                        <h6 class="text-uppercase fw-bold text-success mb-3" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                            <i class="bi bi-info-circle-fill"></i> Rental Summary &amp; Fare Composition
+                        </h6>
+
+                        <div class="table-responsive small">
+                            <table class="table table-sm table-borderless mb-0" style="font-size: 0.9rem;">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted py-1">Vehicle License Plate:</td>
+                                        <td class="text-end fw-bold py-1 text-dark">{{ license_plate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted py-1">Estimated Duration:</td>
+                                        <td class="text-end fw-bold py-1 text-dark">{{ duration_minutes }} minutes</td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td class="py-2 text-secondary"><i class="bi bi-unlock text-success me-1"></i> Fixed Unlock Fee:</td>
+                                        <td class="text-end fw-bold py-2 text-dark">€{{ unlock_cost }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1 text-secondary"><i class="bi bi-clock text-primary me-1"></i> Time Running Cost:</td>
+                                        <td class="text-end fw-bold py-1 text-dark">€{{ time_cost }}</td>
+                                    </tr>
+                                    <tr class="border-top table-success">
+                                        <td class="py-2 fw-bold text-success">TOTAL TO PAY:</td>
+                                        <td class="text-end fw-bold py-2 text-success fs-5">€{{ form.initial.amount }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Form per il Pagamento -->
                     <form action="{% url 'payment_pay' %}" method="post" class="needs-validation">
                         {% csrf_token %}
 
@@ -42,6 +76,7 @@
                                     {% if field.help_text %}
                                         <div class="form-text">{{ field.help_text }}</div>
                                     {% endif %}
+                                    <!-- CORRETTO: Ripristinato il ciclo for nativo per gli errori -->
                                     {% for error in field.errors %}
                                         <div class="text-danger small">{{ error }}</div>
                                     {% endfor %}
@@ -83,6 +118,3 @@
 </script>
 
 {% endblock content %}
-
-
-k

@@ -1,3 +1,5 @@
+# (C) 2026-2026 Francesco Settembrini
+
 """
 URL configuration for rentalcars project.
 """

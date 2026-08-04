@@ -84,7 +84,7 @@
                                         <span class="badge bg-light text-success border">{{ car.hourly_rate }} €/h</span>
                                     </div>
                                     <p class="extra-small text-muted mb-2" style="font-size: 1.0rem; line-height: 1.3;">
-                                        Doors: {{ car.doors }} • Seats: {{ car.seats }} • Range: {{ car.range_km }} km<br>
+                                        Doors: {{ car.doors }} • Seats: {{ car.seats }} • Range: {{ car.available_range_km }} km<br>
                                         <i class="bi bi-geo-alt"></i> Your distance: {{ car.distance_meters|floatformat:"0" }} m
                                     </p>
                                     <a href="{% url 'payment_initiate' car.id %}" class="btn btn-rent w-100 py-1 shadow-sm">

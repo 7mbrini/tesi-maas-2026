@@ -10,6 +10,8 @@ import os
 import random
 from django.contrib.gis.geos import Point
 
+from utils.logs import log_print
+
 from cars.models import Car
 
 
@@ -35,12 +37,11 @@ def tools_create_cars_view(request):
         bSnap = True
 
         create_cars(nCars=5, bbox = outer_bbox, snap = bSnap)
-        create_cars(nCars=25, bbox = mid_bbox, snap = bSnap)
+        create_cars(nCars=15, bbox = mid_bbox, snap = bSnap)
         create_cars(nCars=30, bbox = inner_bbox, snap = bSnap)
 
-
     except Exception as e:
-        print(f"An unexpected error occurred: {str(e)}")
+        log_print(f"An unexpected error occurred: {str(e)}")
 
     return HttpResponseRedirect(reverse('tools'))
 
@@ -58,6 +59,18 @@ def generate_unique_four_digit_id(target_list):
             target_list.append(new_id)
             return new_id
 
+# =============================================================================
+# Genera intego random a 5 cifre e lo aggiunge ad una lista predefinita
+# =============================================================================
+def generate_unique_five_digit_id(target_list):
+    while True:
+                                # genera un integer random tra 1000 and 9999 (incluso)
+        new_id = random.randint(10000, 99999)
+
+                                # verifica per l'uncita' nella lista
+        if new_id not in target_list:
+            target_list.append(new_id)
+            return new_id
 
 # =============================================================================
 # Genera in maniera random un punto geografico in un rettangolo assegnato
@@ -124,7 +137,7 @@ def snap_to_road(lat, lon, radius_meters = 100):
         return None
 
     except Exception as e:
-        print(str(e))
+        log_print(str(e))
         return None
 
 
@@ -134,16 +147,16 @@ def snap_to_road(lat, lon, radius_meters = 100):
 def create_cars(nCars, bbox, snap=True, snap_radius=200):
 
     carModels = [
-        {'seats': 2, 'doors': 3, 'hourly_rate': 20.0, 'image': 'car_images/ecar_01.jpg', 'range_km': 100},
-        {'seats': 2, 'doors': 3, 'hourly_rate': 25.0, 'image': 'car_images/ecar_02.jpg', 'range_km': 150},
-        {'seats': 2, 'doors': 3, 'hourly_rate': 20.0, 'image': 'car_images/ecar_03.jpg', 'range_km': 150},
-        {'seats': 2, 'doors': 3, 'hourly_rate': 25.0, 'image': 'car_images/ecar_04.jpg', 'range_km': 100},
-        {'seats': 2, 'doors': 3, 'hourly_rate': 20.0, 'image': 'car_images/ecar_05.jpg', 'range_km': 150},
-        {'seats': 4, 'doors': 5, 'hourly_rate': 30.0, 'image': 'car_images/ecar_11.jpg', 'range_km': 300},
-        {'seats': 4, 'doors': 5, 'hourly_rate': 35.0, 'image': 'car_images/ecar_12.jpg', 'range_km': 350},
-        {'seats': 6, 'doors': 5, 'hourly_rate': 50.0, 'image': 'car_images/ecar_13.jpg', 'range_km': 250},
-        {'seats': 4, 'doors': 5, 'hourly_rate': 35.0, 'image': 'car_images/ecar_14.jpg', 'range_km': 300},
-        {'seats': 6, 'doors': 5, 'hourly_rate': 50.0, 'image': 'car_images/ecar_15.jpg', 'range_km': 350},
+        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_01.jpg', 'range_km': 100},
+#        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_02.jpg', 'range_km': 100},
+        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_03.jpg', 'range_km': 100},
+#        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_04.jpg', 'range_km': 100},
+        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_05.jpg', 'range_km': 100},
+        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_11.jpg', 'range_km': 150},
+#        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_12.jpg', 'range_km': 150},
+        {'seats': 6, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_13.jpg', 'range_km': 150},
+#        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_14.jpg', 'range_km': 150},
+#        {'seats': 6, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_15.jpg', 'range_km': 150},
     ]
 
     counter = 0
@@ -153,13 +166,16 @@ def create_cars(nCars, bbox, snap=True, snap_radius=200):
         randModel = carModels[random.randint(0, len(carModels)-1)]
 
         TheCar = Car()
-        TheCar.license_plate = f'BA{generate_unique_four_digit_id(plates)}'
+        #TheCar.license_plate = f'BA{generate_unique_four_digit_id(plates)}'
+        TheCar.license_plate = f'BAC{generate_unique_five_digit_id(plates)}'
         TheCar.seats = randModel['seats']
+        TheCar.unlock_cost = 1.5
         TheCar.hourly_rate = randModel['hourly_rate']
         TheCar.doors = randModel['doors']
         TheCar.image = randModel['image']
         TheCar.range_km = randModel['range_km']
-        TheCar.available = random.choice([True, False])
+        TheCar.is_available = random.choice([True, False])
+        TheCar.battery_percentage = random.randint(0, 100)
 
         pos = generate_random_geopoint(bbox)
 

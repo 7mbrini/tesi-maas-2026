@@ -9,4 +9,7 @@ urlpatterns = [
     path('process/', views.payment_process, name='payment_process'),
     path('success/<str:token>/', views.payment_success, name='payment_success'),
     path('failure/', views.payment_failure, name='payment_failure'),
+
+    path('download/<str:token>/<str:license_plate>/', views.download_ticket_pdf, name='download_ticket_pdf'),
+
 ]

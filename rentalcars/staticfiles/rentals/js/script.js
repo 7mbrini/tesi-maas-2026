@@ -1,31 +1,54 @@
 // (C) 2026 Francesco Settembrini
 
-// ==========================================
-// ESECUZIONE (Punto di Partenza Unico)
-// ==========================================
-document.addEventListener("DOMContentLoaded", function ()
-{
-    initializeMap();
-
-    // Sincronizzazione  dei dati
-    syncUserPositionWithServer();
-    renderCarMarkersFromDatabase();
-});
-
-
-// ==========================================
+// ====================================================================================
 // variabili globali
-// ==========================================
+// ====================================================================================
 let map;
+let mainForm;
 let userMarker;
 let carMarkerGroup;
 
-// Connettore principale al Form HTML
-const mainForm = document.getElementById('mainForm');
+// ====================================================================================
+// Entry Point
+// ====================================================================================
+document.addEventListener("DOMContentLoaded", function ()
+{
+    initializeForm();
+    initializeMap();
 
-// ==========================================
-// FUNZIONE DI INIZIALIZZAZIONE (Setup)
-// ==========================================
+    updateUserMarker();
+    updateCarMarkers();
+});
+
+// ====================================================================================
+// Form per la ricerca delle auto disponibili
+// ====================================================================================
+function initializeForm()
+{
+    mainForm  = document.getElementById('mainForm');
+
+    if (mainForm)
+    {
+        mainForm.addEventListener('submit', function ()
+        {
+            const coords = userMarker.getLatLng();
+
+            // Sincronizza le coordinate reali per inviarle a PostGIS via Django Form
+            document.getElementById('id_hidden_decimal_lat').value = coords.lat.toFixed(6);
+            document.getElementById('id_hidden_decimal_lon').value = coords.lng.toFixed(6);
+
+            // Preserva lo stato visivo di Zoom e Centro della mappa per il ricaricamento
+            document.getElementById('id_map_zoom').value = map.getZoom();
+
+            const currentCenter = map.getCenter();
+            document.getElementById('id_map_center').value = currentCenter.lat.toFixed(6) + ',' + currentCenter.lng.toFixed(6);
+        });
+    }
+}
+
+// ====================================================================================
+// Setup della mappa Leaflet
+// ====================================================================================
 function initializeMap()
 {
     // Parametri di fallback predefiniti (Bari)
@@ -42,41 +65,39 @@ function initializeMap()
     if (savedCenter && savedCenter !== "") { initialCoords = savedCenter.split(',').map(Number); }
 
     // Creazione dell'istanza Leaflet
-    map = L.map('RentalsMap', { center: initialCoords, zoom: initialZoom, minZoom: 10, maxZoom: 18 });
+    map = L.map('mapId', { center: initialCoords, zoom: initialZoom, minZoom: 10, maxZoom: 18 });
 
-    // Configurazione e caricamento del Tile Layer (OpenStreetMap protetto)
+    // Configurazione e caricamento del Tile Layer OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
         referrerPolicy: 'no-referrer-when-downgrade'
     }).addTo(map);
 
-    // Setup del Marker Posizione Utente (Trascina e Clicca)
+    // Setup del Marker Posizione Utente
     userMarker = L.marker(initialCoords, { draggable: true }).addTo(map);
-    userMarker.bindPopup("Your Position");
+    userMarker.bindPopup("<b>Your Position</b>");
 
-    // Inizializzazione del gruppo per le auto spaziali
+    // Layer per  le icone delle auto
     carMarkerGroup = L.layerGroup();
     map.addLayer(carMarkerGroup);
 
-    // Registrazione degli eventi di interazione
+    // Callback per l'evento CLICK del mouse
     map.on('click', onMapClick);
 }
 
-// ==========================================
-// GESTIONE EVENTI MAPPA (Interazioni)
-// ==========================================
+// ====================================================================================
+// Gestione evento CLICK sulla mappa
+// ====================================================================================
 function onMapClick(e)
 {
     userMarker.setLatLng(e.latlng);
 }
 
-// ==========================================
-// ELABORAZIONE DATI GEOGRAFICI (MaaS Logica)
-// ==========================================
-
-// Forza il Pin dell'utente sulle coordinate reali inviate dal Backend
-function syncUserPositionWithServer()
+// ====================================================================================
+// Aggionra la posizione dell'utente
+// ====================================================================================
+function updateUserMarker()
 {
     const jsonElement = document.getElementById('json-userPos');
 
@@ -93,8 +114,10 @@ function syncUserPositionWithServer()
     }
 }
 
+// ====================================================================================
 // Disegna le icone SVG vettoriali delle auto estratte dalla Query Spaziale
-function renderCarMarkersFromDatabase()
+// ====================================================================================
+function updateCarMarkers()
 {
     const jsonElement = document.getElementById('json-selCars');
 
@@ -104,7 +127,7 @@ function renderCarMarkersFromDatabase()
             carMarkerGroup.clearLayers();
             const selectedCars = JSON.parse(jsonElement.textContent);
 
-            // Configurazione dell'icona personalizzata per la flotta veicoli
+            // custom icon in formato SVG
             const carIcon = L.divIcon({
                 html: `
                     <div style="background-color: #00aa00; width: 36px; height: 36px; border-radius: 8px;
@@ -126,39 +149,20 @@ function renderCarMarkersFromDatabase()
                 popupAnchor: [0, -20]
             });
 
-            // Posizionamento puntuale dei marker sul Layer specifico
-            selectedCars.forEach(car => {
-                L.marker([car.lat, car.lon], { icon: carIcon })
+            selectedCars.forEach((car, index) => {
+                const marker = L.marker([car.lat, car.lon], { icon: carIcon })
                     .addTo(carMarkerGroup)
-                    .bindPopup(`<b>License Plate:</b> ${car.license_plate}`);
-            });
+                    .bindPopup(`<b>${car.license_plate}</b>`);
 
+                if (index === 0) {
+                    marker.openPopup();
+                }
+            });
         } catch (e) {
             console.error("Error parsing cars JSON:", e);
         }
     } else {
         console.log("Nessun dato JSON 'json-selCars' trovato nel DOM o l'elemento è vuoto.");
     }
-}
-
-// ==========================================
-// AGGIORNAMENTO AGGIUNTIVO: SUBMIT FORM
-// ==========================================
-if (mainForm)
-{
-    mainForm.addEventListener('submit', function ()
-    {
-        const coords = userMarker.getLatLng();
-
-        // Sincronizza le coordinate reali per inviarle a PostGIS via Django Form
-        document.getElementById('id_hidden_decimal_lat').value = coords.lat.toFixed(6);
-        document.getElementById('id_hidden_decimal_lon').value = coords.lng.toFixed(6);
-
-        // Preserva lo stato visivo di Zoom e Centro della mappa per il ricaricamento
-        document.getElementById('id_map_zoom').value = map.getZoom();
-
-        const currentCenter = map.getCenter();
-        document.getElementById('id_map_center').value = currentCenter.lat.toFixed(6) + ',' + currentCenter.lng.toFixed(6);
-    });
 }
 

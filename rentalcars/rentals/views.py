@@ -14,7 +14,7 @@ from cars.models import Car
 
 
 # # =============================================================================
-# # Restituisca la connessione al database PosgreSQL (PostGIS)
+# # Restituisce la connessione al database PosgreSQL (PostGIS)
 # # =============================================================================
 def get_db_connection():
     # Preleviamo la configurazione reale del database calcolata da Django
@@ -78,6 +78,7 @@ def rentals_view(request):
                         seats,
                         hourly_rate,
                         range_km,
+                        battery_percentage,
                         ST_X(location) AS lon,
                         ST_Y(location) AS lat, 
                         ST_Distance(
@@ -92,17 +93,23 @@ def rentals_view(request):
                     )
                     AND doors >= %s
                     AND seats >= %s
-                    AND available = TRUE
+                    AND is_available = TRUE
+                    AND battery_percentage > %s
                     ORDER BY distance_meters ASC;
                 """
-                                        # esegue la query
+                                        # esegue la query passando anche la costante di batteria minima
                 cursor.execute(spatial_query,
                     (user_lon, user_lat, user_lon, user_lat,
-                    buffer_radius, choice_doors, choice_seats, ))
+                    buffer_radius, choice_doors, choice_seats, Car.MIN_BATTERY_LEVEL, ))
 
                 selCars = cursor.fetchall()
-                #os.system('cls')
-                #print(selCars)
+
+                # --- CALCOLO RUNTIME A MONTE CON CAST ESPLICITO ---
+                # Iniettiamo la property calcolata direttamente nei dizionari riga per riga
+                for car in selCars:
+                    r_km = car.get('range_km', 0)
+                    b_per = car.get('battery_percentage', 100)
+                    car['available_range_km'] = int((r_km * b_per) / 100)
 
             except (Exception, psycopg2.Error) as error:
                 print(f"Error while fetching spatial data: {error}")
@@ -128,6 +135,3 @@ def rentals_view(request):
         form = RentalsForm()
 
     return render(request, 'rentals/rentals.html', {'form': form})
-
-
-

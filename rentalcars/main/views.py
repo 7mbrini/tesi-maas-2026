@@ -27,12 +27,22 @@ def policies_view(request):
 def contacts_view(request):
     return render(request, 'main/contacts.html')
 
+# # =============================================================================
+# # Renders the main landing page, listing available cars from the 'cars' app.
+# # =============================================================================
+# def fleet_view(request):
+#     cars_list = Car.objects.all().order_by('hourly_rate')
+#     context = {'cars_list': cars_list}
+#     return render(request, 'main/fleet.html', context)
+
 # =============================================================================
-# Renders the main landing page, listing available cars from the 'cars' app.
+# Renders the main landing page, listing usable cars from the 'cars' app.
 # =============================================================================
 def fleet_view(request):
-    cars_list = Car.objects.all().order_by('hourly_rate')
+    # Il filtro legge dinamicamente la costante dal modello Car!
+    cars_list = Car.objects.filter(
+        battery_percentage__gt=Car.MIN_BATTERY_LEVEL
+    ).order_by('hourly_rate')
+
     context = {'cars_list': cars_list}
     return render(request, 'main/fleet.html', context)
-
-

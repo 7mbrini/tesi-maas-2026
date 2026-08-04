@@ -1,3 +1,4 @@
+// (C) 2026 Francesco Settembrini
 
 function initializeLeafletMap(latitude, longitude, licensePlate) {
 

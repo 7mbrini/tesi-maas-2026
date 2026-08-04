@@ -1,6 +1,6 @@
 /* --- CUSTOM STYLE PLACEHOLDER 2026 --- */
 
-/* 1. Effetto Hover sulle icone Social */
+/* Effetto Hover sulle icone Social */
 .footer a i {
     transition: all 0.3s ease; /* Rende il cambio colore fluido */
     display: inline-block;
@@ -11,15 +11,7 @@
     transform: translateY(-5px) scale(1.2); /* Si alza di 5px e si ingrandisce */
 }
 
-/* 2. Segnaposto per uno sfondo personalizzato del Footer */
-/* (Rimuovi il commento sotto se vuoi sovrascrivere il bg-dark di Bootstrap) */
-/*
-.footer {
-    background: linear-gradient(45deg, #212529, #343a40) !important;
-}
-*/
-
-/* 3. Stile per i link del Copyright */
+/* Stile per i link del Copyright */
 .footer a {
     text-decoration: none;
     transition: opacity 0.2s;

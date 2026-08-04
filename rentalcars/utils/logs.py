@@ -1,3 +1,5 @@
+# (C) 2026 Francesco Settembrini
+
 import os
 
 # --- ANSI CODES ---

@@ -110,13 +110,13 @@
                         <div class="card-body p-2 px-3"> <!-- Padding ridotto -->
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <h5 class="car-title mb-0">{{ car.license_plate }}</h5>
-                                <span class="rate-badge">${{ car.hourly_rate }}/h</span>
+                                <span class="rate-badge">€{{ car.hourly_rate }}/h</span>
                             </div>
 
                             <div class="car-info border-bottom py-1">
                                 <span>Doors <span class="text-dark">{{ car.doors }}</span></span> |
                                 <span>Seats <span class="text-dark">{{ car.seats }}</span></span> |
-                                <span>Range <span class="text-dark">{{ car.range_km }} km</span></span>
+                                <span>Range <span class="text-dark">{{ car.available_range_km }} km</span></span>
                             </div>
 
                             {% if user.is_staff %}
@@ -180,7 +180,7 @@
             var carUnavailableIcon = createCarIcon('#aa0000');      // rosso per le auto gia' noleggiate
 
             {% for car in cars_list %}
-                {% if car.available %}
+                {% if car.is_available %}
                     var marker = L.marker([{{ car.location.y }}, {{ car.location.x }}], { icon: carAvailableIcon } ).addTo(fleetMap);
                     marker.bindPopup("<div class='small'><strong>{{ car.license_plate }}</strong><br>Status: available</div>");
                 {% else %}

@@ -1,20 +1,44 @@
-
-#mapid {
-    height: 600px; /* Essential: The map container needs a defined height */
-    width: 100%;
-}
-body {
-    padding-top: 20px; /* Add some top margin to the body */
-}
+/* (C) 2026 Francesco Settembrini */
 
 :root {
     --rental-green: #10b981;
     --rental-dark: #374151;
     --rental-light-bg: #f8fafc;
-    /* Offset aggiornato: 192px + 16px = 208px */
     --offset-height: 208px;
 }
 
+body {
+    padding-top: 20px;
+}
+
+/* Configurazione di Defaut: SMARTPHONE (Sotto i 768px) */
+.main-row-container {
+    height: auto;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+
+#mapId {
+    height: 450px;
+    width: 100%;
+}
+
+/* Configurazione per PC / TABLET (Dai 768px in su)  */
+@media (min-width: 768px) {
+    .main-row-container {
+        height: calc(100vh - var(--offset-height));
+        flex-direction: row;
+        overflow: hidden;
+    }
+
+    #mapId {
+        height: 100%;
+    }
+}
+
+/* Componenti di interfaccia  */
 .hero-minimal {
     background-color: var(--rental-light-bg);
     border-bottom: 1px solid #e2e8f0;
@@ -36,33 +60,25 @@ body {
     display: inline-block;
 }
 
-.main-row-container {
-    height: calc(100vh - var(--offset-height));
-    min-height: 300px;
-    display: flex;
-    overflow: hidden;
-}
-
 .left-col-bg {
     background-color: #ffffff;
     border-right: 1px solid #e2e8f0;
     overflow-y: auto;
 }
 
-/* MAPPA: Full height della colonna destra */
-#RentalsMap {
-    height: 100%;
-    width: 100%;
+.form-label {
+    font-weight: 500;
+    font-size: 0.85rem;
 }
 
-.form-label { font-weight: 500; font-size: 0.85rem; }
-
 .car-results-container {
-    max-height: 220px; /* Adattato alla nuova altezza */
+    max-height: calc(100vh - 540px);
+    min-height: 150px;
     overflow-y: auto;
     background-color: var(--rental-light-bg);
     border-radius: 0.5rem;
     padding: 8px;
+    padding-bottom: 16px;
 }
 
 .car-mini-card {
@@ -74,7 +90,9 @@ body {
     transition: border-color 0.2s;
 }
 
-.car-mini-card:hover { border-color: var(--rental-green); }
+.car-mini-card:hover {
+    border-color: var(--rental-green);
+}
 
 .btn-rent {
     background-color: var(--rental-green);
@@ -86,6 +104,8 @@ body {
     border-radius: 6px;
 }
 
+/* Leaflet */
 .marker-red-filter {
-  filter: hue-rotate(240deg);
+    filter: hue-rotate(240deg);
 }
+

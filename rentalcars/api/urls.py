@@ -5,6 +5,7 @@ from django.urls import re_path
 
 from . import views
 
+
 urlpatterns = [
     path('cars_get_all/', views.api_cars_get_all, name='api_cars_get_all'),
     path('cars_get_by_license_plate/<str:license_plate>/', views.api_cars_get_by_license_plate,
@@ -17,6 +18,8 @@ urlpatterns = [
         name='api_cars_get_by_range'),
     re_path(r'cars_get_by_nearest_pos/(?P<latitude>[0-9.]+)/(?P<longitude>[0-9.]+)/(?P<radius>[0-9.]+)/$',
         views.api_cars_get_by_nearest_pos, name = 'api_cars_get_by_nearest_pos'),
+
+    path('api_hardware_unlock/', views.api_hardware_unlock, name='api_hardware_unlock'),
 ]
 
 

@@ -7,7 +7,6 @@ Django settings for RentalCars project.
 import os
 
 from pathlib import Path
-from logs import log_clear
 
 
 # Debug Switch: True in sviluppo, False in deployment sul VPS
@@ -21,6 +20,20 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'AGd.tXF89-U.gc2IohYXoSWW2d23Tb
 
 # Hosts
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# =============================================================================
+# CONFIGURAZIONE SMTP COMMUTABILE (LOCALE / VPS)
+# =============================================================================
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False
+
+if DEBUG:
+    # Sviluppo in locale (Windows)
+    EMAIL_HOST = 'host.docker.internal'
+else:
+    # Ambiente di produzione sul VPS (Linux Ubuntu)
+    EMAIL_HOST = '172.17.0.1'
 
 # Necessario quando Django è dietro un Proxy (Plesk/Nginx) per gestire HTTPS correttamente
 if not DEBUG:
@@ -48,6 +61,7 @@ INSTALLED_APPS = [
     'payments',
     'tools',
     'api',
+    'utils',
 ]
 
 MIDDLEWARE = [
@@ -187,6 +201,10 @@ LOGGING = {
     },
 }
 
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
+from utils.logs import log_clear
 
 if os.environ.get('RUN_MAIN') == 'true':
     log_clear()
