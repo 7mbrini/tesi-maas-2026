@@ -7,6 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings  # Per verificare il flag settings.DEBUG
+from django import db  # <--- IMPORTANTE: Necessario per governare i canali del Database
 
 
 def send_timeout_email(user, rental):
@@ -55,6 +56,9 @@ def start_rentals_monitor():
 
     while True:
         try:
+            # --- PROTEZIONE THREAD STEP 1: Chiude i canali sporchi o obsoleti prima di interrogare PostGIS ---
+            db.close_old_connections()
+
             now = timezone.now()
 
             # Stampa di presenza continua ad ogni ciclo di verifica
@@ -103,6 +107,11 @@ def start_rentals_monitor():
         except Exception as e:
             print(f"[ERRORE THREAD BACKGROUND]: {str(e)}")
 
+        finally:
+            # --- PROTEZIONE THREAD STEP 2: Rilascia la connessione prima di andare in sleep ---
+            # Evita la saturazione del pool di connessioni di PostgreSQL sulla porta 5510
+            db.close_old_connections()
+
         # Intervallo dinamico: 10 secondi in sviluppo (DEBUG), 60 secondi in produzione
         if settings.DEBUG:
             time.sleep(10)
@@ -120,7 +129,3 @@ def launch_all_monitors():
     # Lancio del Monitor 1 (Gestione scadenze flotta e noleggi)
     rentals_thread = threading.Thread(target=start_rentals_monitor, daemon=True)
     rentals_thread.start()
-
-    # NOTA PER LA TESI: Qui in futuro basterà aggiungere un altro thread parallelo
-    # ex: card_cleanup_thread = threading.Thread(target=start_payments_monitor, daemon=True)
-    # ex: card_cleanup_thread.start()
