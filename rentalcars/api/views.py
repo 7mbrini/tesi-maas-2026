@@ -763,7 +763,7 @@ def api_vehicle_rent(request):
         passenger_email = data.get('user_email', user.email)
         user.email = passenger_email
 
-        # Spedizione email protetta da un try/except locale (evita crash se Mailpit/SMTP rallenta)
+        # Spedizione email protetta da un try/except locale per isolare gli errori SMTP
         try:
             send_confirmation_email(user, new_rental, token, car.license_plate, qr_bytes)
         except Exception as mail_err:
@@ -786,3 +786,5 @@ def api_vehicle_rent(request):
     except Exception as e:
         print(f"[API] Errore interno nell'API api_vehicle_rent: {str(e)}")
         return JsonResponse({'status': 'error', 'message': 'Internal server error'}, status=500)
+
+

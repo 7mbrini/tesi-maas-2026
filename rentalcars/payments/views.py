@@ -162,8 +162,11 @@ def payment_process(request):
 
         license_plate = request.session.get('license_plate', car.license_plate)
 
-        # Invia l'e-mail di conferma (HTML in memoria + Allegato)
-        send_confirmation_email(request.user, new_rental, token, license_plate, qr_bytes)
+        # Invia l'e-mail di conferma protetta da un try/except locale per isolare gli errori SMTP
+        try:
+            send_confirmation_email(request.user, new_rental, token, license_plate, qr_bytes)
+        except Exception as mail_err:
+            print(f"[WEB] Errore non bloccante nell'invio della mail: {str(mail_err)}")
 
         # Pulizia della sessione
         request.session.pop('pending_amount', None)
@@ -179,7 +182,6 @@ def payment_process(request):
     except Exception as e:
         messages.error(request, f"A database error occurred: {e}. Transaction failed.")
         return redirect('payment_failure')
-
 
 # =============================================================================
 # Gestisce il pagamento avvenuto con successo

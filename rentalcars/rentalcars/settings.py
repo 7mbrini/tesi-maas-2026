@@ -204,7 +204,16 @@ LOGGING = {
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 
+# from utils.logs import log_clear
+#
+# if os.environ.get('RUN_MAIN') == 'true':
+#     log_clear()
+
+# In fondo a settings.py
 from utils.logs import log_clear
 
 if os.environ.get('RUN_MAIN') == 'true':
-    log_clear()
+    try:
+        log_clear()
+    except Exception as log_err:
+        print(f"[SETTINGS] Impossibile pulire i log all'avvio: {str(log_err)}")
