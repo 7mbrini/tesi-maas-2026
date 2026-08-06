@@ -77,10 +77,15 @@ def payment_initiate(request, car_id):
 # =============================================================================
 @login_required
 def payment_pay(request):
+    # Recupera l'importo calcolato in base al tempo effettivo
+    pending_amount = request.session.get('pending_amount', '0.00')
+
     if request.method == 'POST':
         form = PaymentPayForm(request.POST)
         if form.is_valid():
-            request.session['pending_amount'] = str(form.cleaned_data['amount'])
+            #request.session['pending_amount'] = str(form.cleaned_data['amount'])
+            #request.session['pending_amount'] = str(form.cleaned_data['pending_amount'])
+            request.session['pending_amount'] = pending_amount
             return redirect('payment_process')
     else:
         initial_data = {

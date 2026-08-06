@@ -19,7 +19,8 @@ urlpatterns = [
     re_path(r'cars_get_by_nearest_pos/(?P<latitude>[0-9.]+)/(?P<longitude>[0-9.]+)/(?P<radius>[0-9.]+)/$',
         views.api_cars_get_by_nearest_pos, name = 'api_cars_get_by_nearest_pos'),
 
-    path('api_hardware_unlock/', views.api_hardware_unlock, name='api_hardware_unlock'),
+    path('api_vehicle_unlock/', views.api_vehicle_unlock, name = 'api_vehcle_unlock'),
+    path('api_vehicle_rent/', views.api_vehicle_rent, name = 'api_vehicle_rent'),
 ]
 
 

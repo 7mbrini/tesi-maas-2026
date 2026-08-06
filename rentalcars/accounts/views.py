@@ -1,27 +1,21 @@
 # (C) 2026 Francesco Settembrini
 
-from django.shortcuts import render
-
 from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .forms import UserProfileEditForm
-from django.contrib import messages
-
 from django.contrib.auth import logout
-from django.shortcuts import redirect
-
-from django.shortcuts import render, redirect
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from .forms import UserProfileEditForm
-from django.contrib import messages
+from django.contrib.auth.views import LoginView
+
+from .forms import CustomUserCreationForm, CustomUserChangeForm, UserProfileEditForm
+
 
 # CRUD
 
@@ -50,7 +44,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'accounts/user_update.html'
     success_url = reverse_lazy('user_list')
 
-    # Ensure only the profile owner or superuser can update
+    # solo user o superuser (admin) possono aggiornare
     def test_func(self):
         user_obj = self.get_object()
         return self.request.user == user_obj or self.request.user.is_superuser
@@ -68,9 +62,6 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def logout_view(request):
     logout(request)
-    # Redirect to the login page after logging out
-    #return redirect('login')
-    # Or redirect to the homepage: return redirect('/')
     return render(request, 'accounts/logout.html')
 
 
@@ -89,6 +80,12 @@ def edit_profile(request):
 
     return render(request, 'accounts/edit_profile.html', {'form': form})
 
-#@login_required
+
+# mostra il messaggio di conferma della registrazione
 def registration_success(request):
     return render(request, 'accounts/registration_success.html')
+
+# View personalizzata per il cambio password
+class UserPasswordChangeView(auth_views.PasswordChangeView):
+    template_name = 'accounts/change_password.html'
+    success_url = '/accounts/'

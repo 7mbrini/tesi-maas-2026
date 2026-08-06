@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 # =============================================================================
-# Form for user registration (Create)
+# Form per la user registration (Create)
 # =============================================================================
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -13,7 +13,7 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('username', 'email', 'first_name', 'last_name')
 
 # =============================================================================
-# Form for profile updates (Update)
+# Form per l'agiornamento dell'account
 # =============================================================================
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
@@ -24,6 +24,8 @@ class CustomUserChangeForm(UserChangeForm):
         super().__init__(*args, **kwargs)
         del self.fields['password']
 
+# =============================================================================
+# Form per la modifica di nome, cognome ed email
 # =============================================================================
 class UserProfileEditForm(UserChangeForm):
 
