@@ -7,12 +7,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cars', '0006_rename_available_car_is_available_and_more'),
+        ('vehicles', '0006_rename_available_vehicle_is_available_and_more'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='car',
+            model_name='vehicle',
             name='battery_percentage',
             field=models.PositiveIntegerField(default=100, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)]),
         ),

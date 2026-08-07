@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('cars', '0006_rename_available_car_is_available_and_more'),
+        ('vehicles', '0006_rename_available_vehicle_is_available_and_more'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('start_time', models.DateTimeField(default=django.utils.timezone.now, null=True)),
                 ('check_code', models.CharField(default=rentals.models.generate_unique_code, editable=False, max_length=6, unique=True)),
                 ('gateway_transaction_id', models.CharField(max_length=100, null=True, unique=True)),
-                ('car', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='cars.car')),
+                ('vehicle', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='vehicles.vehicle')),
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
         ),

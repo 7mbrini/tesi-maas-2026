@@ -7,6 +7,6 @@ function initializeLeafletMap(latitude, longitude, licensePlate) {
         { attribution: '&copy; <a href="www.openstreetmap.org">OpenStreetMap</a> contributors'}
     ).addTo(map);
 
-    //var car_marker = L.marker([latitude, longitude], {'draggable':true}).addTo(map).bindPopup(licensePlate).openPopup();
-    var car_marker = L.marker([latitude, longitude], {'draggable':false}).addTo(map).bindPopup(licensePlate).openPopup();
+    //var vehicle_marker = L.marker([latitude, longitude], {'draggable':true}).addTo(map).bindPopup(licensePlate).openPopup();
+    var vehicle_marker = L.marker([latitude, longitude], {'draggable':false}).addTo(map).bindPopup(licensePlate).openPopup();
 }

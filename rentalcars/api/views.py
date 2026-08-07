@@ -18,14 +18,14 @@ from django.contrib.auth.models import User
 from decimal import Decimal, InvalidOperation
 
 from django.conf import settings
-from cars.models import Car
+from vehicles.models import Vehicle
 
 from utils.logs import log_clear, log_print
 
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 
-#from cars.models import Car, Rental, PaymentTransaction
+#from vehicles.models import Vehicle, Rental, PaymentTransaction
 from rentals.models import Rental
 from payments.models import PaymentTransaction
 
@@ -43,7 +43,7 @@ from django.contrib.auth.models import User
 # Importa i tuoi modelli reali (verifica i percorsi delle app se necessario)
 #from payments.models import PaymentTransaction
 #from rental.models import Rental
-#from cars.models import Car
+#from vehicles.models import Vehicle
 from payments.views import send_confirmation_email
 
 import uuid
@@ -65,7 +65,7 @@ from django.contrib.auth.models import User
 # Import dei modelli dalle app reali del tuo database
 from rentals.models import Rental
 from payments.models import PaymentTransaction
-from cars.models import Car
+from vehicles.models import Vehicle
 
 
 
@@ -85,21 +85,21 @@ def get_db_connection():
 # =============================================================================
 # API: Restituisce tutte le auto presenti nel database
 # =============================================================================
-def api_cars_get_all(request):
+def api_vehicles_get_all(request):
 
     geojson_data = {}
 
     try:
-        cars = Car.objects.all()
+        vehicles = Vehicle.objects.all()
 
-        geojson_data = serialize('geojson', cars,
+        geojson_data = serialize('geojson', vehicles,
             geometry_field = 'location',
             fields = ('license_plate', 'seats', 'hourly_rate',
                 'doors', 'range_km', 'available', 'location' )
         )
 
     except Exception:
-        log_print("errore in: api_cars_get_all")
+        log_print("errore in: api_vehicles_get_all")
 
     return HttpResponse(geojson_data, content_type='application/json')
 
@@ -107,9 +107,9 @@ def api_cars_get_all(request):
 # =============================================================================
 # API: Restituisce l'auto con la targa richiesta
 # =============================================================================
-def api_cars_get_by_license_plate(request, license_plate):
+def api_vehicles_get_by_license_plate(request, license_plate):
 
-    sel_cars = []
+    sel_vehicles = []
     connection = None
 
     try:
@@ -129,16 +129,16 @@ def api_cars_get_by_license_plate(request, license_plate):
                   range_km,
                   ST_X(location) AS lon,
                   ST_Y(location) AS lat 
-              FROM cars_car
+              FROM vehicles_vehicle
               WHERE license_plate = %s
           """
                                             # esegue la query
         cursor.execute(str_query, (str(license_plate), ))
 
-        sel_cars = cursor.fetchone()
+        sel_vehicles = cursor.fetchone()
 
         #log_clear()
-        #log_print(sel_cars)
+        #log_print(sel_vehicles)
 
     except (Exception, psycopg2.Error) as error:
         log_print(f"Error while fetching spatial data: {error}")
@@ -149,7 +149,7 @@ def api_cars_get_by_license_plate(request, license_plate):
             connection.close()
 
     return HttpResponse(
-        json.dumps(sel_cars, indent=4, cls=DjangoJSONEncoder),
+        json.dumps(sel_vehicles, indent=4, cls=DjangoJSONEncoder),
         content_type='application/json'
     )
 
@@ -158,9 +158,9 @@ def api_cars_get_by_license_plate(request, license_plate):
 # API: Restituisce tutte le auto che hanno numero di posti a sedere
 # maggiore o uguale al valore richiesto
 # =============================================================================
-def api_cars_get_by_seats(request, seats):
+def api_vehicles_get_by_seats(request, seats):
 
-    sel_cars = []
+    sel_vehicles = []
     connection = None
 
     #log_print(seats)
@@ -182,13 +182,13 @@ def api_cars_get_by_seats(request, seats):
                   range_km,
                   ST_X(location) AS lon,
                   ST_Y(location) AS lat 
-              FROM cars_car
+              FROM vehicles_vehicle
               WHERE seats >= %s
           """
                                             # esegue la query
         cursor.execute(str_query, [seats])
 
-        sel_cars = cursor.fetchall()
+        sel_vehicles = cursor.fetchall()
 
     except (Exception, psycopg2.Error) as error:
         log_print(f"Error while fetching spatial data: {error}")
@@ -199,7 +199,7 @@ def api_cars_get_by_seats(request, seats):
             connection.close()
 
     return HttpResponse(
-        json.dumps(sel_cars, indent=4, cls=DjangoJSONEncoder),
+        json.dumps(sel_vehicles, indent=4, cls=DjangoJSONEncoder),
         content_type='application/json'
     )
 
@@ -207,9 +207,9 @@ def api_cars_get_by_seats(request, seats):
 # API: Restituisce tutte le auto che hanno numero di porte maggiore o uguale
 #      al valore richiesto
 # =============================================================================
-def api_cars_get_by_doors(request, doors):
+def api_vehicles_get_by_doors(request, doors):
 
-    sel_cars = []
+    sel_vehicles = []
     connection = None
 
     try:
@@ -228,13 +228,13 @@ def api_cars_get_by_doors(request, doors):
                   range_km,
                   ST_X(location) AS lon,
                   ST_Y(location) AS lat 
-              FROM cars_car
+              FROM vehicles_vehicle
               WHERE doors >= %s
           """
                                             # esegue la query
         cursor.execute(str_query, (doors,))
 
-        sel_cars = cursor.fetchall()
+        sel_vehicles = cursor.fetchall()
 
     except (Exception, psycopg2.Error) as error:
         log_print(f"Error while fetching spatial data: {error}")
@@ -245,7 +245,7 @@ def api_cars_get_by_doors(request, doors):
             connection.close()
 
     return HttpResponse(
-        json.dumps(sel_cars, indent=4, cls=DjangoJSONEncoder),
+        json.dumps(sel_vehicles, indent=4, cls=DjangoJSONEncoder),
         content_type='application/json'
     )
 
@@ -253,9 +253,9 @@ def api_cars_get_by_doors(request, doors):
 # API: Restituisce tutte le auto che hanno una autonomia chilommetria
 #      maggiore o uguale al valore richiesto
 # =============================================================================
-def api_cars_get_by_range_km(request, range):
+def api_vehicles_get_by_range_km(request, range):
 
-    sel_cars = []
+    sel_vehicles = []
     connection = None
 
     #log_print(seats)
@@ -278,13 +278,13 @@ def api_cars_get_by_range_km(request, range):
                   range_km,
                   ST_X(location) AS lon,
                   ST_Y(location) AS lat 
-              FROM cars_car
+              FROM vehicles_vehicle
               WHERE range_km >= %s
           """
                                             # esegue la query
         cursor.execute(str_query, (range,))
 
-        sel_cars = cursor.fetchall()
+        sel_vehicles = cursor.fetchall()
 
     except (Exception, psycopg2.Error) as error:
         log_print(f"Error while fetching spatial data: {error}")
@@ -295,7 +295,7 @@ def api_cars_get_by_range_km(request, range):
             connection.close()
 
     return HttpResponse(
-        json.dumps(sel_cars, indent=4, cls=DjangoJSONEncoder),
+        json.dumps(sel_vehicles, indent=4, cls=DjangoJSONEncoder),
         content_type='application/json'
     )
 
@@ -303,9 +303,9 @@ def api_cars_get_by_range_km(request, range):
 # API: Restituisce tutte le auto piu' vicine alla posizione richiesta,
 #      con le distanze in ordine crescente
 # =============================================================================
-def api_cars_get_by_nearest_pos(request, latitude, longitude, radius):
+def api_vehicles_get_by_nearest_pos(request, latitude, longitude, radius):
     connection = None
-    sel_cars = []
+    sel_vehicles = []
 
     # log_clear()
     # log_print(latitude)
@@ -342,7 +342,7 @@ def api_cars_get_by_nearest_pos(request, latitude, longitude, radius):
                     location::geography, 
                     ST_SetSRID(ST_MakePoint(%s, %s), 4326)::geography
                 ) AS distance_meters
-            FROM cars_car
+            FROM vehicles_vehicle
             WHERE ST_DWithin(
                 location::geography, 
                 ST_SetSRID(ST_MakePoint(%s, %s), 4326)::geography, 
@@ -353,7 +353,7 @@ def api_cars_get_by_nearest_pos(request, latitude, longitude, radius):
                                     # esegue la 'spatial query'
         cursor.execute(str_spatial_query, [longitude, latitude, longitude, latitude, radius])
 
-        sel_cars = cursor.fetchall()
+        sel_vehicles = cursor.fetchall()
 
     except (Exception, psycopg2.Error) as error:
         log_print(f"Error while fetching spatial data: {error}")
@@ -364,7 +364,7 @@ def api_cars_get_by_nearest_pos(request, latitude, longitude, radius):
             connection.close()
 
     return HttpResponse(
-        json.dumps(sel_cars, indent=4, cls=DjangoJSONEncoder),
+        json.dumps(sel_vehicles, indent=4, cls=DjangoJSONEncoder),
         content_type='application/json'
     )
 
@@ -406,17 +406,17 @@ def api_vehicle_unlock(request):
         rental.save()
 
         # Invia l'impulso hardware all'auto associata sbloccando la serratura
-        if rental.car:
-            rental.car.is_locked = False  # Le portiere fisiche si aprono!
-            rental.car.save()
+        if rental.vehicle:
+            rental.vehicle.is_locked = False  # Le portiere fisiche si aprono!
+            rental.vehicle.save()
 
             # --- Debug: log per confermare l'evento M2M a terminale ---
-            print(f"[{timezone.now().strftime('%H:%M:%S')}] M2M API - UNLOCK CAR {rental.car.license_plate} CODE {code}")
+            print(f"[{timezone.now().strftime('%H:%M:%S')}] M2M API - UNLOCK CAR {rental.vehicle.license_plate} CODE {code}")
 
         # Restituisce la risposta di successo in inglese per il client
         return JsonResponse({
             'status': 'success',
-            'message': f'Vehicle {rental.car.license_plate} successfully unlocked. Enjoy your ride!',
+            'message': f'Vehicle {rental.vehicle.license_plate} successfully unlocked. Enjoy your ride!',
             'start_time': rental.start_time.isoformat(),
             'estimated_end_time': rental.end_time.isoformat()  # Calcolata in RAM dalla property!
         }, status=200)
@@ -440,12 +440,12 @@ def api_vehicle_unlock(request):
 #         data = json.loads(request.body)
 #
 #         username = data.get('username')
-#         car_id = data.get('car_id')
+#         vehicle_id = data.get('vehicle_id')
 #         duration_minutes = data.get('duration_minutes')
 #
-#         if not all([username, car_id, duration_minutes]):
+#         if not all([username, vehicle_id, duration_minutes]):
 #             return JsonResponse(
-#                 {'status': 'error', 'message': 'Missing required fields: username, car_id, duration_minutes'},
+#                 {'status': 'error', 'message': 'Missing required fields: username, vehicle_id, duration_minutes'},
 #                 status=400)
 #
 #         # CORRETTO: Validazione preventiva del tipo di dato per la durata
@@ -458,27 +458,27 @@ def api_vehicle_unlock(request):
 #         # CORRETTO: Sostituito get_object_or_404 con costrutti try/except per restituire JSON coerenti
 #         try:
 #             user = User.objects.get(username=username)
-#             car = Car.objects.get(id=car_id)
+#             vehicle = Vehicle.objects.get(id=vehicle_id)
 #         except ObjectDoesNotExist:
-#             return JsonResponse({'status': 'error', 'message': 'User or Car not found'}, status=404)
+#             return JsonResponse({'status': 'error', 'message': 'User or Vehicle not found'}, status=404)
 #
 #         # Calcolo analitico dei costi
-#         dec_hourly_rate = Decimal(str(car.hourly_rate))
-#         dec_unlock_cost = Decimal(str(car.unlock_cost))
+#         dec_hourly_rate = Decimal(str(vehicle.hourly_rate))
+#         dec_unlock_cost = Decimal(str(vehicle.unlock_cost))
 #         time_cost = (dec_hourly_rate * dec_minutes) / Decimal('60.0')
 #         total_amount = (dec_unlock_cost + time_cost).quantize(Decimal('0.01'))
 #
 #         # Transazione ACID atomica sul Database
 #         with transaction.atomic():
 #             # CORRETTO: select_for_update() blocca la riga sul DB ed evita che altri thread leggano l'auto come disponibile
-#             car_locked = Car.objects.select_for_update().get(id=car.id)
+#             vehicle_locked = Vehicle.objects.select_for_update().get(id=vehicle.id)
 #
-#             if not car_locked.is_available:
+#             if not vehicle_locked.is_available:
 #                 return JsonResponse({'status': 'error', 'message': 'Vehicle is already booked'}, status=400)
 #
 #             new_rental = Rental.objects.create(
 #                 user=user,
-#                 car=car_locked,
+#                 vehicle=vehicle_locked,
 #                 status='reserved',
 #                 duration_minutes=int_duration_minutes
 #             )
@@ -493,11 +493,11 @@ def api_vehicle_unlock(request):
 #             )
 #
 #             # Cambia lo stato dell'auto locked
-#             car_locked.is_available = False
-#             car_locked.save()
+#             vehicle_locked.is_available = False
+#             vehicle_locked.save()
 #
 #             # Aggiorniamo il riferimento locale per il resto della funzione
-#             car = car_locked
+#             vehicle = vehicle_locked
 #
 #         # Generazione del token e del QR Code in memoria
 #         token = new_rental.check_code
@@ -517,7 +517,7 @@ def api_vehicle_unlock(request):
 #         # CORRETTO: Isolato l'invio email. Se fallisce la mail, l'API restituisce comunque Success (201)
 #         # perché il noleggio sul DB è andato a buon fine.
 #         try:
-#             send_confirmation_email(user, new_rental, token, car.license_plate, qr_bytes)
+#             send_confirmation_email(user, new_rental, token, vehicle.license_plate, qr_bytes)
 #         except Exception as mail_err:
 #             log_print(f"Errore non bloccante nell'invio della mail: {str(mail_err)}")
 #
@@ -526,7 +526,7 @@ def api_vehicle_unlock(request):
 #             'status': 'success',
 #             'booking_id': new_rental.id,
 #             'unlock_code': token,
-#             'license_plate': car.license_plate,
+#             'license_plate': vehicle.license_plate,
 #             'amount_paid': float(total_amount),
 #             'gateway_transaction_id': new_transaction.gateway_transaction_id,
 #             'message': 'Rental successfully processed via MaaS Orchestrator'
@@ -555,13 +555,13 @@ def api_vehicle_unlock(request):
 #         data = json.loads(request.body)
 #
 #         username = data.get('username')
-#         car_id = data.get('car_id')
+#         vehicle_id = data.get('vehicle_id')
 #         duration_minutes = data.get('duration_minutes')
 #
 #         # Controllo presenza dati obbligatori
-#         if not all([username, car_id, duration_minutes]):
+#         if not all([username, vehicle_id, duration_minutes]):
 #             return JsonResponse(
-#                 {'status': 'error', 'message': 'Missing required fields: username, car_id, duration_minutes'},
+#                 {'status': 'error', 'message': 'Missing required fields: username, vehicle_id, duration_minutes'},
 #                 status=400)
 #
 #         # Validazione preventiva del tipo di dato per la durata
@@ -574,13 +574,13 @@ def api_vehicle_unlock(request):
 #         # Recupero dell'utente e dell'auto con gestione pulita ed esplicita degli errori
 #         try:
 #             user = User.objects.get(username=username)
-#             car = Car.objects.get(id=car_id)
+#             vehicle = Vehicle.objects.get(id=vehicle_id)
 #         except ObjectDoesNotExist:
-#             return JsonResponse({'status': 'error', 'message': 'User or Car not found'}, status=404)
+#             return JsonResponse({'status': 'error', 'message': 'User or Vehicle not found'}, status=404)
 #
 #         # Calcolo analitico e blindato dei costi (coerente con le tariffe del mezzo)
-#         dec_hourly_rate = Decimal(str(car.hourly_rate))
-#         dec_unlock_cost = Decimal(str(car.unlock_cost))
+#         dec_hourly_rate = Decimal(str(vehicle.hourly_rate))
+#         dec_unlock_cost = Decimal(str(vehicle.unlock_cost))
 #         time_cost = (dec_hourly_rate * dec_minutes) / Decimal('60.0')
 #         total_amount = (dec_unlock_cost + time_cost).quantize(Decimal('0.01'))
 #
@@ -589,16 +589,16 @@ def api_vehicle_unlock(request):
 #         # =====================================================================
 #         with transaction.atomic():
 #             # Blocca la riga sul DB ed evita che altri thread leggano l'auto come disponibile
-#             car_locked = Car.objects.select_for_update().get(id=car.id)
+#             vehicle_locked = Vehicle.objects.select_for_update().get(id=vehicle.id)
 #
-#             if not car_locked.is_available:
+#             if not vehicle_locked.is_available:
 #                 return JsonResponse({'status': 'error', 'message': 'Vehicle is already booked'}, status=400)
 #
 #             # 1. Creiamo il Rental passandogli i suoi soli parametri validi in stato 'reserved'
 #             # Nota: il campo 'timestamp' (data di creazione) si popola automaticamente grazie all'auto_now_add di Django
 #             new_rental = Rental.objects.create(
 #                 user=user,
-#                 car=car_locked,
+#                 vehicle=vehicle_locked,
 #                 status='reserved',
 #                 duration_minutes=int_duration_minutes
 #             )
@@ -613,17 +613,17 @@ def api_vehicle_unlock(request):
 #                 gateway_transaction_id=str(uuid.uuid4())
 #             )
 #
-#             # 3. Aggiorniamo la disponibilità dell'auto per bloccarla sul server MaaS
-#             car_locked.is_available = False
-#             car_locked.save()
+#             # 3. Aggiorniamo la disponibilità dell'auto per blocvehiclela sul server MaaS
+#             vehicle_locked.is_available = False
+#             vehicle_locked.save()
 #
-#             car = car_locked
+#             vehicle = vehicle_locked
 #
 #         # Recuperiamo il token generato automaticamente dal modello
 #         token = new_rental.check_code
 #
 #         # --- FEEDBACK NEL LOGGER [API] ---
-#         print(f"[API] M2M API - RESERVATION CREATED FOR CAR {car.license_plate} CODE {token} DURATION {int_duration_minutes} MIN. WAITING FOR UNLOCK.")
+#         print(f"[API] M2M API - RESERVATION CREATED FOR CAR {vehicle.license_plate} CODE {token} DURATION {int_duration_minutes} MIN. WAITING FOR UNLOCK.")
 #
 #         # Generazione del QR Code in memoria (Formato PNG)
 #         qr = qrcode.QRCode(version=1, box_size=10, border=4)
@@ -639,9 +639,9 @@ def api_vehicle_unlock(request):
 #         passenger_email = data.get('user_email', user.email)
 #         user.email = passenger_email
 #
-#         # Invia l'e-mail di conferma (Isolato per non bloccare la risposta HTTP se l'SMTP rallenta)
+#         # Invia l'e-mail di conferma (Isolato per non blocvehiclee la risposta HTTP se l'SMTP rallenta)
 #         try:
-#             send_confirmation_email(user, new_rental, token, car.license_plate, qr_bytes)
+#             send_confirmation_email(user, new_rental, token, vehicle.license_plate, qr_bytes)
 #         except Exception as mail_err:
 #             print(f"[API] Errore non bloccante nell'invio della mail di conferma: {str(mail_err)}")
 #
@@ -650,7 +650,7 @@ def api_vehicle_unlock(request):
 #             'status': 'success',
 #             'booking_id': new_rental.id,
 #             'unlock_code': token,
-#             'license_plate': car.license_plate,
+#             'license_plate': vehicle.license_plate,
 #             'amount_paid': float(total_amount),
 #             'gateway_transaction_id': new_transaction.gateway_transaction_id,
 #             'message': 'Rental successfully processed via MaaS Orchestrator'
@@ -679,13 +679,13 @@ def api_vehicle_rent(request):
         # 1. Parsing dei dati in ingresso dal JSON
         data = json.loads(request.body)
         username = data.get('username')
-        car_id = data.get('car_id')
+        vehicle_id = data.get('vehicle_id')
         duration_minutes = data.get('duration_minutes')
 
         # Controllo presenza dati obbligatori
-        if not all([username, car_id, duration_minutes]):
+        if not all([username, vehicle_id, duration_minutes]):
             return JsonResponse(
-                {'status': 'error', 'message': 'Missing required fields: username, car_id, duration_minutes'},
+                {'status': 'error', 'message': 'Missing required fields: username, vehicle_id, duration_minutes'},
                 status=400)
 
         # Validazione preventiva del tipo di dato per la durata
@@ -698,13 +698,13 @@ def api_vehicle_rent(request):
         # Recupero dell'utente e dell'auto con gestione pulita ed esplicita degli errori
         try:
             user = User.objects.get(username=username)
-            car = Car.objects.get(id=car_id)
+            vehicle = Vehicle.objects.get(id=vehicle_id)
         except ObjectDoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'User or Car not found'}, status=404)
+            return JsonResponse({'status': 'error', 'message': 'User or Vehicle not found'}, status=404)
 
         # Calcolo economico analitico e blindato (coerente con le tariffe del mezzo)
-        dec_hourly_rate = Decimal(str(car.hourly_rate))
-        dec_unlock_cost = Decimal(str(car.unlock_cost))
+        dec_hourly_rate = Decimal(str(vehicle.hourly_rate))
+        dec_unlock_cost = Decimal(str(vehicle.unlock_cost))
         time_cost = (dec_hourly_rate * dec_minutes) / Decimal('60.0')
         total_amount = (dec_unlock_cost + time_cost).quantize(Decimal('0.01'))
 
@@ -713,15 +713,15 @@ def api_vehicle_rent(request):
         # =====================================================================
         with transaction.atomic():
             # Blocca la riga su PostgreSQL per evitare doppie prenotazioni concorrenti
-            car_locked = Car.objects.select_for_update().get(id=car.id)
+            vehicle_locked = Vehicle.objects.select_for_update().get(id=vehicle.id)
 
-            if not car_locked.is_available:
+            if not vehicle_locked.is_available:
                 return JsonResponse({'status': 'error', 'message': 'Vehicle is already booked'}, status=400)
 
             # 1. Creazione Rental (Django gestisce in automatico la colonna 'timestamp' come sul browser)
             new_rental = Rental.objects.create(
                 user=user,
-                car=car_locked,
+                vehicle=vehicle_locked,
                 status='reserved',
                 duration_minutes=int_duration_minutes
             )
@@ -737,17 +737,17 @@ def api_vehicle_rent(request):
             )
 
             # 3. Blocco dell'auto sulla mappa del MaaS
-            car_locked.is_available = False
-            car_locked.save()
+            vehicle_locked.is_available = False
+            vehicle_locked.save()
 
-            car = car_locked
+            vehicle = vehicle_locked
 
         # Recuperiamo il codice di sblocco generato automaticamente dal modello
         token = new_rental.check_code
 
         # --- FEEDBACK NEL LOGGER [API] ---
         print(
-            f"[API] M2M API - RESERVATION CREATED FOR CAR {car.license_plate} CODE {token} DURATION {int_duration_minutes} MIN. WAITING FOR UNLOCK.")
+            f"[API] M2M API - RESERVATION CREATED FOR CAR {vehicle.license_plate} CODE {token} DURATION {int_duration_minutes} MIN. WAITING FOR UNLOCK.")
 
         # Generazione del QR Code in memoria (Formato PNG)
         qr = qrcode.QRCode(version=1, box_size=10, border=4)
@@ -765,7 +765,7 @@ def api_vehicle_rent(request):
 
         # Spedizione email protetta da un try/except locale per isolare gli errori SMTP
         try:
-            send_confirmation_email(user, new_rental, token, car.license_plate, qr_bytes)
+            send_confirmation_email(user, new_rental, token, vehicle.license_plate, qr_bytes)
         except Exception as mail_err:
             print(f"[API] Errore non bloccante nell'invio della mail: {str(mail_err)}")
 
@@ -774,7 +774,7 @@ def api_vehicle_rent(request):
             'status': 'success',
             'booking_id': new_rental.id,
             'unlock_code': token,
-            'license_plate': car.license_plate,
+            'license_plate': vehicle.license_plate,
             'amount_paid': float(total_amount),
             'gateway_transaction_id': new_transaction.gateway_transaction_id,
             'message': 'Rental successfully processed via MaaS Orchestrator'

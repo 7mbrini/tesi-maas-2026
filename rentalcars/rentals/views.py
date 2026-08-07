@@ -10,7 +10,7 @@ from psycopg2.extras import RealDictCursor
 
 from django.conf import settings
 
-from cars.models import Car
+from vehicles.models import Vehicle
 
 
 # # =============================================================================
@@ -85,7 +85,7 @@ def rentals_view(request):
                             location::geography, 
                             ST_SetSRID(ST_MakePoint(%s, %s), 4326)::geography
                         ) AS distance_meters
-                    FROM cars_car
+                    FROM vehicles_vehicle
                     WHERE ST_DWithin(
                         location::geography, 
                         ST_SetSRID(ST_MakePoint(%s, %s), 4326)::geography, 
@@ -100,16 +100,16 @@ def rentals_view(request):
                                         # esegue la query passando anche la costante di batteria minima
                 cursor.execute(spatial_query,
                     (user_lon, user_lat, user_lon, user_lat,
-                    buffer_radius, choice_doors, choice_seats, Car.MIN_BATTERY_LEVEL, ))
+                    buffer_radius, choice_doors, choice_seats, Vehicle.MIN_BATTERY_LEVEL, ))
 
                 selCars = cursor.fetchall()
 
                 # --- CALCOLO RUNTIME A MONTE CON CAST ESPLICITO ---
                 # Iniettiamo la property calcolata direttamente nei dizionari riga per riga
-                for car in selCars:
-                    r_km = car.get('range_km', 0)
-                    b_per = car.get('battery_percentage', 100)
-                    car['available_range_km'] = int((r_km * b_per) / 100)
+                for vehicle in selCars:
+                    r_km = vehicle.get('range_km', 0)
+                    b_per = vehicle.get('battery_percentage', 100)
+                    vehicle['available_range_km'] = int((r_km * b_per) / 100)
 
             except (Exception, psycopg2.Error) as error:
                 print(f"Error while fetching spatial data: {error}")
@@ -130,7 +130,7 @@ def rentals_view(request):
 
         return render(request, 'rentals/rentals.html', context)
 
-                                            # richiesta GET (primo caricamento della pagina)
+                                            # richiesta GET (primo vehicleicamento della pagina)
     else:
         form = RentalsForm()
 

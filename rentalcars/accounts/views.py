@@ -75,7 +75,7 @@ def edit_profile(request):
             messages.success(request, 'Your profile has been successfully updated!')
             return redirect('edit_profile')  # Reindirizza alla stessa pagina o a una pagina di successo
     else:
-        # Quando carichiamo la pagina, prepopoliamo il form con i dati correnti
+        # Quando vehicleichiamo la pagina, prepopoliamo il form con i dati correnti
         form = UserProfileEditForm(instance=request.user)
 
     return render(request, 'accounts/edit_profile.html', {'form': form})

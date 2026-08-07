@@ -51,7 +51,7 @@ class PaymentInitiateForm(forms.Form):
 
 
 class PaymentPayForm(forms.Form):
-    card_number = forms.CharField(max_length=16, min_length=16, label="Card Number")
+    vehicled_number = forms.CharField(max_length=16, min_length=16, label="Card Number")
     expiry_date = forms.CharField(max_length=5, label="Expiry Date (MM/YY)")
     cvc = forms.CharField(max_length=3, min_length=3, label="CVC")
     amount = forms.DecimalField(max_digits=10, decimal_places=2, initial=10.00,

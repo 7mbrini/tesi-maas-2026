@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 import string
 
-from cars.models import Car
+from vehicles.models import Vehicle
 
 
 # =============================================================================
@@ -35,7 +35,7 @@ class Rental(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='reserved')
 
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -73,4 +73,4 @@ class Rental(models.Model):
         return False
 
     def __str__(self):
-        return f"Rental {self.id} | Vehicle: {self.car.license_plate if self.car else 'None'} | Status: {self.status}"
+        return f"Rental {self.id} | Vehicle: {self.vehicle.license_plate if self.vehicle else 'None'} | Status: {self.status}"

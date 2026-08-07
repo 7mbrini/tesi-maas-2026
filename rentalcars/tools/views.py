@@ -12,7 +12,7 @@ from django.contrib.gis.geos import Point
 
 from utils.logs import log_print
 
-from cars.models import Car
+from vehicles.models import Vehicle
 
 
 # =============================================================================
@@ -24,7 +24,7 @@ def tools_view(request):
 # =============================================================================
 #
 # =============================================================================
-def tools_create_cars_view(request):
+def tools_create_vehicles_view(request):
 
     try:
                                                             # Bari bboxes
@@ -32,13 +32,13 @@ def tools_create_cars_view(request):
         mid_bbox = [41.107, 16.848, 41.132, 16.899]         # intera area urbana
         inner_bbox = [41.111, 16.855, 41.125, 16.871]       # zona "murattiana"
 
-        Car.objects.all().delete()
+        Vehicle.objects.all().delete()
 
         bSnap = True
 
-        create_cars(nCars=5, bbox = outer_bbox, snap = bSnap)
-        create_cars(nCars=15, bbox = mid_bbox, snap = bSnap)
-        create_cars(nCars=30, bbox = inner_bbox, snap = bSnap)
+        create_vehicles(nCars=5, bbox = outer_bbox, snap = bSnap)
+        create_vehicles(nCars=15, bbox = mid_bbox, snap = bSnap)
+        create_vehicles(nCars=30, bbox = inner_bbox, snap = bSnap)
 
     except Exception as e:
         log_print(f"An unexpected error occurred: {str(e)}")
@@ -142,30 +142,30 @@ def snap_to_road(lat, lon, radius_meters = 100):
 
 
 # =============================================================================
-# Genera e restituisce una lista di autoveicoli con "snap" sulle strade carrabili
+# Genera e restituisce una lista di autoveicoli con "snap" sulle strade vehiclerabili
 # =============================================================================
-def create_cars(nCars, bbox, snap=True, snap_radius=200):
+def create_vehicles(nCars, bbox, snap=True, snap_radius=200):
 
-    carModels = [
-        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_01.jpg', 'range_km': 100},
-#        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_02.jpg', 'range_km': 100},
-        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_03.jpg', 'range_km': 100},
-#        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_04.jpg', 'range_km': 100},
-        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'car_images/ecar_05.jpg', 'range_km': 100},
-        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_11.jpg', 'range_km': 150},
-#        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_12.jpg', 'range_km': 150},
-        {'seats': 6, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_13.jpg', 'range_km': 150},
-#        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_14.jpg', 'range_km': 150},
-#        {'seats': 6, 'doors': 5, 'hourly_rate': 20.0, 'image': 'car_images/ecar_15.jpg', 'range_km': 150},
+    vehicleModels = [
+        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'vehicle_images/evehicle_01.jpg', 'range_km': 100},
+#        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'vehicle_images/evehicle_02.jpg', 'range_km': 100},
+        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'vehicle_images/evehicle_03.jpg', 'range_km': 100},
+#        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'vehicle_images/evehicle_04.jpg', 'range_km': 100},
+        {'seats': 2, 'doors': 3, 'hourly_rate': 15.0, 'image': 'vehicle_images/evehicle_05.jpg', 'range_km': 100},
+        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'vehicle_images/evehicle_11.jpg', 'range_km': 150},
+#        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'vehicle_images/evehicle_12.jpg', 'range_km': 150},
+        {'seats': 6, 'doors': 5, 'hourly_rate': 20.0, 'image': 'vehicle_images/evehicle_13.jpg', 'range_km': 150},
+#        {'seats': 4, 'doors': 5, 'hourly_rate': 20.0, 'image': 'vehicle_images/evehicle_14.jpg', 'range_km': 150},
+#        {'seats': 6, 'doors': 5, 'hourly_rate': 20.0, 'image': 'vehicle_images/evehicle_15.jpg', 'range_km': 150},
     ]
 
     counter = 0
     plates = []
 
     while counter < nCars:
-        randModel = carModels[random.randint(0, len(carModels)-1)]
+        randModel = vehicleModels[random.randint(0, len(vehicleModels)-1)]
 
-        TheCar = Car()
+        TheCar = Vehicle()
         #TheCar.license_plate = f'BA{generate_unique_four_digit_id(plates)}'
         TheCar.license_plate = f'BAC{generate_unique_five_digit_id(plates)}'
         TheCar.seats = randModel['seats']
@@ -179,7 +179,7 @@ def create_cars(nCars, bbox, snap=True, snap_radius=200):
 
         pos = generate_random_geopoint(bbox)
 
-                                            # se attivo lo "snap" posizione le auto sulle vie carrabili
+                                            # se attivo lo "snap" posizione le auto sulle vie vehiclerabili
         if snap == True :
             snapped_pos = snap_to_road(pos.y, pos.x, snap_radius)
 

@@ -7,7 +7,7 @@
 # from django.utils import timezone
 # from datetime import timedelta
 # from django.core.mail import EmailMultiAlternatives
-# from django.conf import settings  # Importiamo i settings di Django per verificare il flag DEBUG
+# from django.conf import settings  # Importiamo i settings di Django per verifivehiclee il flag DEBUG
 #
 #
 # class RentalsConfig(AppConfig):
@@ -53,10 +53,10 @@
 #                     rental.save()
 #
 #                     # Il veicolo torna utilizzabile e disponibile per Bari, ma chiuso a chiave
-#                     if rental.car:
-#                         rental.car.is_available = True
-#                         rental.car.is_locked = True
-#                         rental.car.save()
+#                     if rental.vehicle:
+#                         rental.vehicle.is_available = True
+#                         rental.vehicle.is_locked = True
+#                         rental.vehicle.save()
 #
 #                     # Invio notifica e-mail transazionale in inglese per superamento tempo limite
 #                     if rental.user:
@@ -72,11 +72,11 @@
 #                     if rental.is_expired:
 #                         #print(f"[{now.strftime('%H:%M:%S')}] FINE CORSA: Tempo esaurito per Rental ID {rental.id}.")
 #                         # Recuperiamo la targa in modo sicuro con un fallback se il mezzo fosse assente
-#                         car_plate = rental.car.license_plate if rental.car else "N/A"
+#                         vehicle_plate = rental.vehicle.license_plate if rental.vehicle else "N/A"
 #
 #                         # --- MODIFICA APPLICATA: Inserita la targa nel log di fine corsa ---
 #                         print(
-#                             f"[{now.strftime('%H:%M:%S')}] FINE CORSA: Tempo esaurito per Rental ID {rental.id} - Vehicle: {car_plate}")
+#                             f"[{now.strftime('%H:%M:%S')}] FINE CORSA: Tempo esaurito per Rental ID {rental.id} - Vehicle: {vehicle_plate}")
 #
 #
 #                         rental.status = 'completed'
@@ -84,10 +84,10 @@
 #                         rental.save()
 #
 #                         # Comando hardware M2M: blocco immediato portiere e reinserimento in flotta
-#                         if rental.car:
-#                             rental.car.is_locked = True
-#                             rental.car.is_available = True
-#                             rental.car.save()
+#                         if rental.vehicle:
+#                             rental.vehicle.is_locked = True
+#                             rental.vehicle.is_available = True
+#                             rental.vehicle.save()
 #
 #             except Exception as e:
 #                 print(f"[ERRORE THREAD BACKGROUND]: {str(e)}")
@@ -104,7 +104,7 @@
 #     # =============================================================================
 #     def send_timeout_email(self, user, rental):
 #         subject = f"Reservation Expired - Rental ID {rental.id}"
-#         targa = rental.car.license_plate if rental.car else "N/A"
+#         targa = rental.vehicle.license_plate if rental.vehicle else "N/A"
 #
 #         # Layout HTML per l'utente in casella di posta (rigorosamente in inglese)
 #         html_content = f"""

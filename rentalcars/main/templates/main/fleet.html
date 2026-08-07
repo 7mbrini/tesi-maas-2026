@@ -43,7 +43,7 @@
             border: 1px solid #e2e8f0;
         }
 
-        .car-card {
+        .vehicle-vehicled {
             border: 1px solid #f1f5f9;
             background-color: #ffffff;
             border-radius: 0.75rem;
@@ -51,13 +51,13 @@
             overflow: hidden;
         }
 
-        .car-card img {
+        .vehicle-vehicled img {
             height: 140px; /* Ridotto da 160px */
             object-fit: cover;
         }
 
-        .car-title { font-weight: 600; color: var(--rental-dark); font-size: 0.95rem; }
-        .car-info { font-size: 0.8rem; color: #64748b; }
+        .vehicle-title { font-weight: 600; color: var(--rental-dark); font-size: 0.95rem; }
+        .vehicle-info { font-size: 0.8rem; color: #64748b; }
         .rate-badge {
             background-color: #ecfdf5;
             color: var(--rental-green);
@@ -80,7 +80,7 @@
             <div>
                 <h1 class="page-title mb-0">Electric Fleet</h1>
                 <p class="header-sub mb-0 d-none d-sm-inline">
-                    <i class="bi bi-lightning-charge text-success"></i> 100% sustainable city cars.
+                    <i class="bi bi-lightning-charge text-success"></i> 100% sustainable city vehicles.
                 </p>
             </div>
             <span class="text-uppercase small fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">
@@ -98,30 +98,30 @@
 
         <!-- LISTA AUTO -->
         <div class="row g-3 mb-4">
-            {% for car in cars_list %}
+            {% for vehicle in vehicles_list %}
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="car-card h-100 shadow-sm">
-                        {% if car.image %}
-                            <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.license_plate }}">
+                    <div class="vehicle-vehicled h-100 shadow-sm">
+                        {% if vehicle.image %}
+                            <img src="{{ vehicle.image.url }}" class="vehicled-img-top" alt="{{ vehicle.license_plate }}">
                         {% else %}
-                            <img src="{% static 'cars/img/default_car.png' %}" class="card-img-top" alt="Placeholder">
+                            <img src="{% static 'vehicles/img/default_vehicle.png' %}" class="vehicled-img-top" alt="Placeholder">
                         {% endif %}
 
-                        <div class="card-body p-2 px-3"> <!-- Padding ridotto -->
+                        <div class="vehicled-body p-2 px-3"> <!-- Padding ridotto -->
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <h5 class="car-title mb-0">{{ car.license_plate }}</h5>
-                                <span class="rate-badge">€{{ car.hourly_rate }}/h</span>
+                                <h5 class="vehicle-title mb-0">{{ vehicle.license_plate }}</h5>
+                                <span class="rate-badge">€{{ vehicle.hourly_rate }}/h</span>
                             </div>
 
-                            <div class="car-info border-bottom py-1">
-                                <span>Doors <span class="text-dark">{{ car.doors }}</span></span> |
-                                <span>Seats <span class="text-dark">{{ car.seats }}</span></span> |
-                                <span>Range <span class="text-dark">{{ car.available_range_km }} km</span></span>
+                            <div class="vehicle-info border-bottom py-1">
+                                <span>Doors <span class="text-dark">{{ vehicle.doors }}</span></span> |
+                                <span>Seats <span class="text-dark">{{ vehicle.seats }}</span></span> |
+                                <span>Range <span class="text-dark">{{ vehicle.available_range_km }} km</span></span>
                             </div>
 
                             {% if user.is_staff %}
                                 <div class="mt-2">
-                                    <a href="{% url 'edit_car_admin' car_id=car.id %}" class="btn btn-outline-warning btn-sm w-100 py-0" style="font-size: 0.75rem;">
+                                    <a href="{% url 'edit_vehicle_admin' vehicle_id=vehicle.id %}" class="btn btn-outline-warning btn-sm w-100 py-0" style="font-size: 0.75rem;">
                                         Edit
                                     </a>
                                 </div>
@@ -131,7 +131,7 @@
                 </div>
             {% empty %}
                 <div class="col-12 text-center py-4">
-                    <p class="text-muted small">No cars available.</p>
+                    <p class="text-muted small">No vehicles available.</p>
                 </div>
             {% endfor %}
         </div>
@@ -162,7 +162,7 @@
                         </svg>
                     </div>
                 `,
-                className: 'custom-car-marker',
+                className: 'custom-vehicle-marker',
                 iconSize: [40, 40],       // Parentesi quadre corrette qui
                 iconAnchor: [20, 20],     // Parentesi quadre corrette qui
                 popupAnchor: [0, -20]
@@ -176,16 +176,16 @@
                 attribution: '&copy; OpenStreetMap'
             }).addTo(fleetMap);
 
-            var carAvailableIcon = createCarIcon('#00aa00');
-            var carUnavailableIcon = createCarIcon('#aa0000');      // rosso per le auto gia' noleggiate
+            var vehicleAvailableIcon = createCarIcon('#00aa00');
+            var vehicleUnavailableIcon = createCarIcon('#aa0000');      // rosso per le auto gia' noleggiate
 
-            {% for car in cars_list %}
-                {% if car.is_available %}
-                    var marker = L.marker([{{ car.location.y }}, {{ car.location.x }}], { icon: carAvailableIcon } ).addTo(fleetMap);
-                    marker.bindPopup("<div class='small'><strong>{{ car.license_plate }}</strong><br>Status: available</div>");
+            {% for vehicle in vehicles_list %}
+                {% if vehicle.is_available %}
+                    var marker = L.marker([{{ vehicle.location.y }}, {{ vehicle.location.x }}], { icon: vehicleAvailableIcon } ).addTo(fleetMap);
+                    marker.bindPopup("<div class='small'><strong>{{ vehicle.license_plate }}</strong><br>Status: available</div>");
                 {% else %}
-                    var marker = L.marker([{{ car.location.y }}, {{ car.location.x }}], { icon: carUnavailableIcon } ).addTo(fleetMap);
-                    marker.bindPopup("<div class='small'><strong>{{ car.license_plate }}</strong><br>Status: rented</div>");
+                    var marker = L.marker([{{ vehicle.location.y }}, {{ vehicle.location.x }}], { icon: vehicleUnavailableIcon } ).addTo(fleetMap);
+                    marker.bindPopup("<div class='small'><strong>{{ vehicle.license_plate }}</strong><br>Status: rented</div>");
                     //marker._icon.classList.add('marker-color-rented');
                 {% endif %}
             {% endfor %}

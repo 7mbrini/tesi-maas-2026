@@ -24,18 +24,18 @@ from django.core.mail import EmailMultiAlternatives
 # IMPORTAZIONI CORRETTE DELLE DUE APP
 from rentals.models import Rental
 from payments.models import PaymentTransaction  # Il nostro nuovo modello finanziario
-from cars.models import Car
+from vehicles.models import Vehicle
 from .forms import PaymentInitiateForm, PaymentPayForm
 
 from utils.logs import log_print, log_clear
 
 
 # =============================================================================
-# Gestisce il pagamento del noleggio relativo al veicolo car_id
+# Gestisce il pagamento del noleggio relativo al veicolo vehicle_id
 # =============================================================================
-def payment_initiate(request, car_id):
+def payment_initiate(request, vehicle_id):
     # Usiamo get_object_or_404 per evitare IndexError se l'id non esiste
-    car = get_object_or_404(Car, id=car_id)
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
     if request.method == 'POST':
         form = PaymentInitiateForm(request.POST)
@@ -46,8 +46,8 @@ def payment_initiate(request, car_id):
             total_hours = float(minutes) / 60.0
 
             # Scomposizione analitica dei costi per la trasparenza utente
-            unlock_cost = float(car.unlock_cost)
-            time_cost = float(car.hourly_rate) * total_hours
+            unlock_cost = float(vehicle.unlock_cost)
+            time_cost = float(vehicle.hourly_rate) * total_hours
             total_amount = unlock_cost + time_cost
 
             # Memorizza l'importo e i dettagli del calcolo nella sessione (Formato stringa a 2 decimali)
@@ -57,8 +57,8 @@ def payment_initiate(request, car_id):
 
             # Informazioni di contesto del noleggio
             request.session['rental_duration_minutes'] = minutes
-            request.session['license_plate'] = car.license_plate
-            request.session['selected_car_id'] = car.id
+            request.session['license_plate'] = vehicle.license_plate
+            request.session['selected_vehicle_id'] = vehicle.id
 
             return redirect('payment_pay')
     else:
@@ -66,14 +66,14 @@ def payment_initiate(request, car_id):
 
         context = {
             'form': form,
-            'car_plate': car.license_plate
+            'vehicle_plate': vehicle.license_plate
         }
 
     return render(request, 'payments/payment_initiate.html', context)
 
 
 # =============================================================================
-# Sottopone la form di pagamento: numero di carta, data scadenza, importo, ecc...
+# Sottopone la form di pagamento: numero di vehicleta, data scadenza, importo, ecc...
 # =============================================================================
 @login_required
 def payment_pay(request):
@@ -111,22 +111,22 @@ def payment_pay(request):
 def payment_process(request):
     amount_str = request.session.get('pending_amount')
     duration_minutes = request.session.get('rental_duration_minutes', 60)
-    car_id = request.session.get('selected_car_id')
+    vehicle_id = request.session.get('selected_vehicle_id')
 
-    if not amount_str or not car_id:
+    if not amount_str or not vehicle_id:
         messages.error(request, "No pending transaction or vehicle found.")
-        return redirect('payment_initiate', car_id=car_id if car_id else 1)
+        return redirect('payment_initiate', vehicle_id=vehicle_id if vehicle_id else 1)
 
     try:
         amount_decimal = decimal.Decimal(amount_str)
-        car = get_object_or_404(Car, id=car_id)
+        vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
         # RIMOZIONE DEL VECCHIO ERRORE: Logica atomica disaccoppiata
         with transaction.atomic():
             # 1. Creiamo il Rental passandogli i suoi soli parametri validi
             new_rental = Rental.objects.create(
                 user=request.user,
-                car=car,
+                vehicle=vehicle,
                 status='reserved',
                 duration_minutes=duration_minutes
             )
@@ -141,9 +141,9 @@ def payment_process(request):
                 gateway_transaction_id=str(uuid.uuid4())
             )
 
-            # 3. Aggiorniamo la disponibilità dell'auto per bloccarla sul server
-            car.is_available = False
-            car.save()
+            # 3. Aggiorniamo la disponibilità dell'auto per blocvehiclela sul server
+            vehicle.is_available = False
+            vehicle.save()
 
         token = new_rental.check_code
 
@@ -160,7 +160,7 @@ def payment_process(request):
         # Inietta il QR Code convertito in Base64 nella sessione per la pagina di successo
         request.session['success_qr_base64'] = base64.b64encode(qr_bytes).decode('utf-8')
 
-        license_plate = request.session.get('license_plate', car.license_plate)
+        license_plate = request.session.get('license_plate', vehicle.license_plate)
 
         # Invia l'e-mail di conferma protetta da un try/except locale per isolare gli errori SMTP
         try:
@@ -171,7 +171,7 @@ def payment_process(request):
         # Pulizia della sessione
         request.session.pop('pending_amount', None)
         request.session.pop('rental_duration_minutes', None)
-        request.session.pop('selected_car_id', None)
+        request.session.pop('selected_vehicle_id', None)
 
         return redirect(reverse('payment_success', args=[token]))
 
@@ -287,11 +287,11 @@ def send_confirmation_email(user, rental, token, license_plate, qr_bytes):
 
 
 # =============================================================================
-# Genera al volo e scarica il report PDF in memoria senza salvare file
+# Genera al volo e svehicleica il report PDF in memoria senza salvare file
 # =============================================================================
 @login_required
 def download_ticket_pdf(request, token, license_plate):
-    """Genera al volo e scarica il report PDF in memoria senza salvare file"""
+    """Genera al volo e svehicleica il report PDF in memoria senza salvare file"""
     # Recupera la transazione dal database tramite il token
     rental = get_object_or_404(Rental, check_code=token, user=request.user)
 

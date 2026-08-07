@@ -6,14 +6,14 @@ import threading
 from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import EmailMultiAlternatives
-from django.conf import settings  # Per verificare il flag settings.DEBUG
+from django.conf import settings  # Per verifivehiclee il flag settings.DEBUG
 from django import db  # <--- IMPORTANTE: Necessario per governare i canali del Database
 
 
 def send_timeout_email(user, rental):
     """Invia una mail su Mailpit avvisando l'utente del ritardo e della perdita del denaro."""
     subject = f"Reservation Expired - Rental ID {rental.id}"
-    targa = rental.car.license_plate if rental.car else "N/A"
+    targa = rental.vehicle.license_plate if rental.vehicle else "N/A"
 
     html_content = f"""
     <!DOCTYPE html>
@@ -76,10 +76,10 @@ def start_rentals_monitor():
                 rental.status = 'cancelled'
                 rental.save()
 
-                if rental.car:
-                    rental.car.is_available = True
-                    rental.car.is_locked = True
-                    rental.car.save()
+                if rental.vehicle:
+                    rental.vehicle.is_available = True
+                    rental.vehicle.is_locked = True
+                    rental.vehicle.save()
 
                 if rental.user:
                     send_timeout_email(rental.user, rental)
@@ -91,18 +91,18 @@ def start_rentals_monitor():
 
             for rental in active_rentals:
                 if rental.is_expired:
-                    car_plate = rental.car.license_plate if rental.car else "N/A"
+                    vehicle_plate = rental.vehicle.license_plate if rental.vehicle else "N/A"
                     print(
-                        f"[{now.strftime('%H:%M:%S')}] FINE CORSA: Tempo esaurito per Rental ID {rental.id} - Vehicle: {car_plate}")
+                        f"[{now.strftime('%H:%M:%S')}] FINE CORSA: Tempo esaurito per Rental ID {rental.id} - Vehicle: {vehicle_plate}")
 
                     rental.status = 'completed'
                     rental.actual_end_time = now
                     rental.save()
 
-                    if rental.car:
-                        rental.car.is_locked = True
-                        rental.car.is_available = True
-                        rental.car.save()
+                    if rental.vehicle:
+                        rental.vehicle.is_locked = True
+                        rental.vehicle.is_available = True
+                        rental.vehicle.save()
 
         except Exception as e:
             print(f"[ERRORE THREAD BACKGROUND]: {str(e)}")

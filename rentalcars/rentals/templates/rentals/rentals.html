@@ -16,11 +16,11 @@
 <header class="hero-minimal mb-0">
     <div class="container d-flex align-items-center justify-content-between text-start gap-4">
         <!-- Titolo grande a sinistra -->
-        <h1 class="page-title mb-0 fs-1 fw-bold text-nowrap">Rent a Car</h1>
+        <h1 class="page-title mb-0 fs-1 fw-bold text-nowrap">Rent a Vehicle</h1>
 
         <p class="header-sub mb-0 d-none d-md-block fs-3 fw-medium text-dark text-start flex-grow-1 ps-5 ms-4 lh-sm">
             <i class="bi bi-geo-alt text-success me-1"></i>
-            Pin your location and filter cars<br>
+            Pin your location and filter vehicles<br>
             <span class="fs-5 fw-normal text-muted">You may click on the icons for details.</span>
         </p>
 
@@ -32,7 +32,7 @@
         <!-- Colonna Sinistra (Setup per la Ricerca) -->
         <div class="col-md-4 p-0 left-col-bg">
             <div class="p-3">
-                <h5 class="h5 fw-bold mb-3 text-uppercase text-success text-center" style="letter-spacing: 1px;">Select Your Car</h5>
+                <h5 class="h5 fw-bold mb-3 text-uppercase text-success text-center" style="letter-spacing: 1px;">Select Your Vehicle</h5>
 
                 {% if error %}
                     <div class="alert alert-danger p-2 small" style="font-size: 0.75rem;">{{ error }}</div>
@@ -76,18 +76,18 @@
                         </h3>
 
                         {% if selCars|length > 0 %}
-                            <div class="car-results-container border">
-                                {% for car in selCars %}
-                                <div class="car-mini-card shadow-sm border-bottom border-primary border-2">
+                            <div class="vehicle-results-container border">
+                                {% for vehicle in selCars %}
+                                <div class="vehicle-mini-vehicled shadow-sm border-bottom border-primary border-2">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="fw-bold text-dark h6 mb-0">{{ car.license_plate }}</span>
-                                        <span class="badge bg-light text-success border">{{ car.hourly_rate }} €/h</span>
+                                        <span class="fw-bold text-dark h6 mb-0">{{ vehicle.license_plate }}</span>
+                                        <span class="badge bg-light text-success border">{{ vehicle.hourly_rate }} €/h</span>
                                     </div>
                                     <p class="extra-small text-muted mb-2" style="font-size: 1.0rem; line-height: 1.3;">
-                                        Doors: {{ car.doors }} • Seats: {{ car.seats }} • Range: {{ car.available_range_km }} km<br>
-                                        <i class="bi bi-geo-alt"></i> Your distance: {{ car.distance_meters|floatformat:"0" }} m
+                                        Doors: {{ vehicle.doors }} • Seats: {{ vehicle.seats }} • Range: {{ vehicle.available_range_km }} km<br>
+                                        <i class="bi bi-geo-alt"></i> Your distance: {{ vehicle.distance_meters|floatformat:"0" }} m
                                     </p>
-                                    <a href="{% url 'payment_initiate' car.id %}" class="btn btn-rent w-100 py-1 shadow-sm">
+                                    <a href="{% url 'payment_initiate' vehicle.id %}" class="btn btn-rent w-100 py-1 shadow-sm">
                                         Rent Now
                                     </a>
                                 </div>

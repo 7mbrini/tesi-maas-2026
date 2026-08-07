@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'rest_framework_gis',
 
     'main',
-    'cars',
+    'vehicles',
     'rentals',
     'accounts',
     'payments',
@@ -78,7 +78,7 @@ MIDDLEWARE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ.get('DB_NAME', 'rentalcars'),
+        'NAME': os.environ.get('DB_NAME', 'rentalvehicles'),
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
         'HOST': os.environ.get('DB_HOST', 'db'),
@@ -108,7 +108,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'rentalcars.wsgi.application'
+WSGI_APPLICATION = 'rentalvehicles.wsgi.application'
 
 # Default Django
 LANGUAGE_CODE = 'en-us'
@@ -118,7 +118,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-ROOT_URLCONF = 'rentalcars.urls'
+ROOT_URLCONF = 'rentalvehicles.urls'
 LOGIN_REDIRECT_URL = '/rentals/'
 
 # Static files (CSS, JavaScript, Images)

@@ -1,11 +1,11 @@
 # (C) 2026 Francesco Settembrini
 
 from django.contrib.gis import forms
-from .models import Car
+from .models import Vehicle
 
 class CarForm(forms.ModelForm):
     class Meta:
-        model = Car
+        model = Vehicle
         fields = ['id', 'license_plate', 'seats', 'hourly_rate', 'doors', 'image', 'range_km']
         widgets = {
             'license_plate': forms.TextInput(attrs={'class': 'form-control'}),

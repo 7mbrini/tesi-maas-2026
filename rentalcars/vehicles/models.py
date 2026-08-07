@@ -10,7 +10,7 @@ def validate_license_plate(value):
     if not re.fullmatch(r'[A-Za-z0-9]{6}', value):
         raise ValidationError('License plate must be exactly 6 alphanumeric characters.', code='invalid_license_plate')
 
-class Car(models.Model):
+class Vehicle(models.Model):
     # La soglia minima di batteria tollerata è definita SOLO QUI
     MIN_BATTERY_LEVEL = 10
 
@@ -20,7 +20,7 @@ class Car(models.Model):
     hourly_rate = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     DOOR_CHOICES = [(3, '3 Doors'), (5, '5 Doors')]
     doors = models.IntegerField(choices=DOOR_CHOICES)
-    image = models.ImageField(upload_to='car_images/', null=True, blank=True)
+    image = models.ImageField(upload_to='vehicle_images/', null=True, blank=True)
     range_km = models.IntegerField(validators=[MinValueValidator(0)])
     battery_percentage = models.PositiveIntegerField(default=100, validators=[MinValueValidator(0), MaxValueValidator(100)])
     is_available = models.BooleanField(default=True)

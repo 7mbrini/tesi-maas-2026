@@ -1,7 +1,7 @@
 # (C) 2026 Francesco Settembrini
 
 from django.shortcuts import render
-from cars.models import Car
+from vehicles.models import Vehicle
 
 # =============================================================================
 # Renders the main landing page
@@ -28,21 +28,21 @@ def contacts_view(request):
     return render(request, 'main/contacts.html')
 
 # # =============================================================================
-# # Renders the main landing page, listing available cars from the 'cars' app.
+# # Renders the main landing page, listing available vehicles from the 'vehicles' app.
 # # =============================================================================
 # def fleet_view(request):
-#     cars_list = Car.objects.all().order_by('hourly_rate')
-#     context = {'cars_list': cars_list}
+#     vehicles_list = Vehicle.objects.all().order_by('hourly_rate')
+#     context = {'vehicles_list': vehicles_list}
 #     return render(request, 'main/fleet.html', context)
 
 # =============================================================================
-# Renders the main landing page, listing usable cars from the 'cars' app.
+# Renders the main landing page, listing usable vehicles from the 'vehicles' app.
 # =============================================================================
 def fleet_view(request):
-    # Il filtro legge dinamicamente la costante dal modello Car!
-    cars_list = Car.objects.filter(
-        battery_percentage__gt=Car.MIN_BATTERY_LEVEL
+    # Il filtro legge dinamicamente la costante dal modello Vehicle!
+    vehicles_list = Vehicle.objects.filter(
+        battery_percentage__gt=Vehicle.MIN_BATTERY_LEVEL
     ).order_by('hourly_rate')
 
-    context = {'cars_list': cars_list}
+    context = {'vehicles_list': vehicles_list}
     return render(request, 'main/fleet.html', context)

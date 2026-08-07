@@ -1,7 +1,7 @@
 # (C) 2026-2026 Francesco Settembrini
 
 """
-URL configuration for rentalcars project.
+URL configuration for rentalvehicles project.
 """
 
 from django.contrib import admin
@@ -14,7 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include('main.urls')),       # Home Page
-    path('cars/', include('cars.urls')),   # Car management and API
+    path('vehicles/', include('vehicles.urls')),   # Vehicle management and API
     path('rentals/', include('rentals.urls')), # Interactive map view
     path('accounts/', include('accounts.urls')), # Accounts manageent
     path('payments/', include('payments.urls')), # Payents management

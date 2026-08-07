@@ -71,7 +71,7 @@ def log_clear(count=3, style=THEME_SEPARATOR):
     timestamp = datetime.now().strftime("[%H:%M:%S]")
 
     if LogState.color_enabled:
-        # Riga con timestamp: aggiungiamo uno spazio iniziale per staccarlo dal bordo
+        # Riga con timestamp: aggiungiamo uno spazio iniziale per stacvehiclelo dal bordo
         text_row = f" {timestamp} "
         # Riempiamo il resto della riga con spazi fino a NCOLS
         ts_line = f"{style}{text_row}{' ' * (NCOLS - len(text_row))}{RESET}"

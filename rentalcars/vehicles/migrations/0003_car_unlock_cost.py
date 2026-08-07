@@ -7,12 +7,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cars', '0002_car_available'),
+        ('vehicles', '0002_vehicle_available'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='car',
+            model_name='vehicle',
             name='unlock_cost',
             field=models.DecimalField(decimal_places=2, default=1.0, max_digits=5, validators=[django.core.validators.MinValueValidator(0)]),
         ),
